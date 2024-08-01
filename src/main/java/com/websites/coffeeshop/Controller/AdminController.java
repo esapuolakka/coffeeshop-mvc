@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.websites.coffeeshop.Service.AdminService;
 
@@ -22,8 +23,9 @@ public class AdminController {
   }
 
   @GetMapping("/tuotteet")
-  public String getAllItems(Model model) {
-    model.addAttribute("items", adminService.getAllItems());
+  public String getAllItems(@RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, Model model) {
+    model.addAttribute("items", adminService.getAllByCategory(categoryId));
+    model.addAttribute("selectedCategory", categoryId);
     return "adminItems";
   }
 
