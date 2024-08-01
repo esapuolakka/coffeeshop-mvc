@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="category")
+@Table(name="osasto")
 public class Category {
   
   @Id
@@ -18,8 +18,11 @@ public class Category {
   @Column(name="id")
   private Long id;
 
-  @Column(name="name")
+  @Column(name="nimi")
   private String name;
+
+  @Column(name="osastoid")
+  private Long categoryId;
 
   @OneToMany(mappedBy="category")
   private List<Item> categoryItems;

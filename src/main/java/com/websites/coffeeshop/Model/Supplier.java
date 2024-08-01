@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="supplier")
+@Table(name="toimittaja")
 public class Supplier {
   
   @Id
@@ -18,13 +18,13 @@ public class Supplier {
   @Column(name="id")
   private Long id;
 
-  @Column(name="name")
+  @Column(name="nimi")
   private String name;
 
-  @Column(name="contact_person")
+  @Column(name="yhteyshenkilö")
   private String contactPerson;
 
-  @Column(name="contact_person_email")
+  @Column(name="yhteyshenkilön_email")
   private String contactPersonEmail;
 
   @OneToMany(mappedBy="supplier")

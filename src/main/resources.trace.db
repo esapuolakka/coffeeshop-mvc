@@ -1,0 +1,82 @@
+2024-08-01 17:28:01.290116+03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Column "SUPPLIER_ID" not found; SQL statement:
+INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, supplier_id, manufacturer_id, lisätty) VALUES 
+(1, 'Siemens EQ.6 Plus S500 kahvikone', 'Siemens EQ.6 Plus S500 -kahvikoneessa on SensoFlow-teknologia sekä kätevä OneTouch-toiminto, joiden ansiosta keität erinomaista kahvia hetkessä.', 1299, NULL, 1, 1, 1, NOW()),
+(2, 'De’Longhi Magnifica S ECAM 22.110', 'De’Longhi Magnifica S ECAM 22.110 -kahvikoneella valmistat herkullista espressoa ja suodatinkahvia yhdellä painalluksella.', 699, NULL, 1, 2, 2, NOW()),
+(3, 'Breville Barista Express', 'Breville Barista Express -kahvikone yhdistää kahvimyllyn ja kahvinkeittimen, mikä takaa tuoreuden ja laadun.', 899, NULL, 1, 3, 1, NOW()),
+(4, 'Rancilio Silvia', 'Rancilio Silvia on klassinen espresso-kone, joka tarjoaa ammattimaisen laadun kotikeittiössä.', 749, NULL, 1, 2, 3, NOW()),
+(5, 'Nespresso VertuoPlus', 'Nespresso VertuoPlus -kahvikoneella voit valmistaa eri kokoisia kahvia helposti ja nopeasti.', 249, NULL, 1, 4, 4, NOW()),
+(6, 'Moka Pot', 'Moka Pot on perinteinen kahvinkeittolaite, joka tuottaa voimakasta ja makuisaa kahvia.', 30, NULL, 1, 5, 5, NOW()),
+(7, 'Hario V60', 'Hario V60 on suosittu suodatinlaite, joka takaa täydellisen suodatinkahvin valmistuksen.', 25, NULL, 1, 6, 6, NOW()),
+(8, 'Bodum Chambord French Press', 'Bodum Chambord French Press on kaunis ja toimiva keitin, joka tuottaa täyteläistä kahvia.', 40, NULL, 1, 5, 7, NOW()),
+(9, 'Aerolatte Milk Frother', 'Aerolatte Milk Frother on täydellinen väline maitovaahtojen valmistamiseen kahviin.', 20, NULL, 1, 4, 6, NOW()),
+(10, 'Baratza Encore kahvimylly', 'Baratza Encore on huipputason kahvimylly, joka takaa tasaisen ja tarkan jauhamisen.', 199, NULL, 1, 2, 1, NOW()),
+(11, 'Keurig K-Elite', 'Keurig K-Elite on kätevä kertakäyttökahvinkeitin, joka valmistaa kahvin nopeasti ja helposti.', 169, NULL, 1, 3, 4, NOW()),
+(12, 'Gaggia Classic Pro', 'Gaggia Classic Pro on ammattilaistasoinen espresso-kone, joka on suunniteltu kotikäyttöön.', 599, NULL, 1, 2, 3, NOW()),
+(13, 'Café du Monde Chicory Coffee', 'Café du Monde -kahvi on ranskalais-italialainen kahvi, joka on maustettu sikurilla.', 15, NULL, 1, 1, 4, NOW()),
+(14, 'Lavazza Super Crema', 'Lavazza Super Crema on tasapainoinen kahvituote, jossa on voimakkaita makuja ja paksua vaahtoa.', 25, NULL, 1, 3, 2, NOW()),
+(15, 'Peet’s Coffee Major Dickason’s Blend', 'Peet’s Coffee Major Dickason’s Blend on tumma paahtokahvi, joka on täynnä makua.', 20, NULL, 1, 2, 5, NOW()),
+(16, 'Illy Classico Espresso', 'Illy Classico Espresso on laadukas espresso, joka tarjoaa erinomaisen maun ja aromin.', 12, NULL, 1, 1, 6, NOW()),
+(17, 'Stumptown Coffee Roasters Hair Bender', 'Stumptown Coffee Roasters Hair Bender on monimuotoinen kahvi, jossa on hedelmäisiä ja mausteisia vivahteita.', 18, NULL, 1, 3, 1, NOW()),
+(18, 'Blue Bottle Coffee Single Origin', 'Blue Bottle Coffee Single Origin -kahvi on huolellisesti valittu ja paahtoleivonnan huipputuote.', 22, NULL, 1, 4, 4, NOW()),
+(19, 'Peugeot Bistro kahvimylly', 'Peugeot Bistro on klassinen kahvimylly, joka yhdistää muotoilun ja toimivuuden.', 45, NULL, 1, 5, 7, NOW()),
+(20, 'Café Puro Organic Coffee', 'Café Puro Organic Coffee on luomutuote, joka on sekä herkullinen että kestävä valinta.', 16, NULL, 1, 1, 5, NOW()) [42122-224]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:514)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
+	at org.h2.message.DbException.get(DbException.java:223)
+	at org.h2.message.DbException.get(DbException.java:199)
+	at org.h2.table.Table.getColumn(Table.java:759)
+	at org.h2.command.Parser.parseColumn(Parser.java:1190)
+	at org.h2.command.Parser.parseColumnList(Parser.java:1175)
+	at org.h2.command.Parser.parseInsert(Parser.java:1549)
+	at org.h2.command.Parser.parsePrepared(Parser.java:719)
+	at org.h2.command.Parser.parse(Parser.java:592)
+	at org.h2.command.Parser.parse(Parser.java:564)
+	at org.h2.command.Parser.prepareCommand(Parser.java:483)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:639)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:559)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1166)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:245)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:231)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1345)
+	at org.h2.server.web.WebApp.query(WebApp.java:1143)
+	at org.h2.server.web.WebApp.query(WebApp.java:1119)
+	at org.h2.server.web.WebApp.process(WebApp.java:245)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:177)
+	at org.h2.server.web.JakartaWebServlet.doGet(JakartaWebServlet.java:129)
+	at org.h2.server.web.JakartaWebServlet.doPost(JakartaWebServlet.java:166)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:904)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1570)

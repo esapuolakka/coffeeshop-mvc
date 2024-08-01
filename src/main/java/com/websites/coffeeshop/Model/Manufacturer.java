@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="manufacturer")
+@Table(name="valmistaja")
 public class Manufacturer {
 
   @Id
@@ -18,7 +18,7 @@ public class Manufacturer {
   @Column(name="id")
   private Long id;
 
-  @Column(name="name")
+  @Column(name="nimi")
   private String name;
 
   @Column(name="url")

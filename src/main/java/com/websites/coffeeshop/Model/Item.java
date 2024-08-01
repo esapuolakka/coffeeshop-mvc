@@ -5,13 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="item")
+@Table(name="tuote")
 public class Item {
 
   @Id
@@ -19,28 +20,31 @@ public class Item {
   @Column(name="id")
   private Long id;
 
-  @Column(name="name")
+  @Column(name="nimi")
   private String name;
 
-  @Column(name="description")
+  @Column(name="kuvaus")
   private String description;
 
-  @Column(name="price")
+  @Column(name="hinta")
   private BigDecimal price;
 
   @Lob
-  @Column(name="image")
+  @Column(name="tuotekuva")
   private byte[] image;
 
+  @Column(name="lisätty")
+  private LocalDateTime createdAt;
+
   @ManyToOne
-  @JoinColumn(name="category_id", nullable=false)
+  @JoinColumn(name="osastoid", nullable=false)
   private Category category;
 
   @ManyToOne
-  @JoinColumn(name="supplier_id", nullable=false)
+  @JoinColumn(name="toimittajaid", nullable=false)
   private Supplier supplier;
 
   @ManyToOne
-  @JoinColumn(name="manufacturer_id", nullable=false)
+  @JoinColumn(name="valmistajaid", nullable=false)
   private Manufacturer manufacturer;
 }
