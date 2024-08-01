@@ -30,6 +30,7 @@ public class Item {
   private BigDecimal price;
 
   @Lob
+  @Basic(fetch = FetchType.LAZY)
   @Column(name="tuotekuva")
   private byte[] image;
 

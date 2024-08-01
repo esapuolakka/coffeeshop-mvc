@@ -13,7 +13,7 @@ public class CoffeeShopController {
   @Autowired
   private CoffeeShopService coffeeShopService;
   
-  @GetMapping("/home")
+  @GetMapping("/etusivu")
   public String homepage(Model model) {
     return "index";
   }
@@ -21,14 +21,14 @@ public class CoffeeShopController {
   @GetMapping("/kahvilaitteet")
   public String kahvilaitteet(Model model) {
     model.addAttribute("items", coffeeShopService.getAllByCategory(1L));
-    return "kahvilaitteet";
+    return "equipment";
   }
 
 
   @GetMapping("/kulutustuotteet")
   public String kulutustuotteet(Model model) {
     model.addAttribute("items", coffeeShopService.getAllByCategory(2L));
-    return "kulutustuotteet";
+    return "supplies";
   }
 
 
