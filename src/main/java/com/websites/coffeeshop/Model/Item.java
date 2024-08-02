@@ -41,11 +41,11 @@ public class Item {
   @JoinColumn(name="osastoid", nullable=false)
   private Category category;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="toimittajaid", nullable=false)
   private Supplier supplier;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name="valmistajaid", nullable=false)
   private Manufacturer manufacturer;
 }

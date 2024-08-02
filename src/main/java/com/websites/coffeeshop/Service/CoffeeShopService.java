@@ -1,11 +1,8 @@
 package com.websites.coffeeshop.Service;
 
-import java.util.Optional;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.websites.coffeeshop.Model.Item;
 import com.websites.coffeeshop.Repository.ItemRepository;
 
@@ -16,13 +13,8 @@ public class CoffeeShopService {
   private ItemRepository itemRepository;
   
   public Item getItemById(Long id) {
-    Optional<Item> itemOptional = itemRepository.findById(id);
-
-    if (itemOptional.isPresent()) {
-      return itemOptional.get();
-    } else {
-      return null;
-    }
+    return itemRepository.findById(id)
+      .orElseThrow(() -> new RuntimeException("Item not found"));
   }
 
   public List<Item> getAllItems() {
