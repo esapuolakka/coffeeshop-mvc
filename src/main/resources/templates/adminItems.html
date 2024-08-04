@@ -13,15 +13,31 @@
     <header th:replace="~{fragments/layout :: header}"></header>
     <main class="container mt-5">
       <h1>Kaikki tuotteet</h1>
-      <form id="categoryForm" method="get" action="/admin/tuotteet" style="margin-top: 3rem; width: 30%; min-width: 200px">
+      <form
+        id="categoryForm"
+        method="get"
+        action="/admin/tuotteet"
+        style="margin-top: 3rem; width: 30%; min-width: 200px"
+      >
         <div class="mb-3">
-            <label for="categorySelect" class="form-label">Valitse kategoria</label>
-            <select class="form-select" id="categorySelect" name="categoryId" onchange="document.getElementById('categoryForm').submit();">
-                <option value="1" th:selected="${selectedCategory == 1}">Kahvilaitteet</option>
-                <option value="2" th:selected="${selectedCategory == 2}">Kulutustuotteet</option>
-            </select>
+          <label for="categorySelect" class="form-label"
+            >Valitse kategoria</label
+          >
+          <select
+            class="form-select"
+            id="categorySelect"
+            name="categoryId"
+            onchange="document.getElementById('categoryForm').submit();"
+          >
+            <option value="1" th:selected="${selectedCategory == 1}">
+              Kahvilaitteet
+            </option>
+            <option value="2" th:selected="${selectedCategory == 2}">
+              Kulutustuotteet
+            </option>
+          </select>
         </div>
-    </form>
+      </form>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -35,7 +51,11 @@
             <th scope="row" th:text="${item.id}">1</th>
             <td th:text="${item.name}">Tuotteen nimi</td>
             <td th:text="${item.price}">0.00</td>
-            <td><a th:href="@{/admin/tuotteet/{itemId}(itemId=${item.id})}">Avaa</a></td>
+            <td>
+              <a th:href="@{/admin/tuotteet/{itemId}(itemId=${item.id})}"
+                >Avaa</a
+              >
+            </td>
           </tr>
         </tbody>
       </table>

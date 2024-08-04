@@ -80,7 +80,7 @@
         aria-labelledby="editModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="editModalLabel">Muokkaa Tuotetta</h5>
@@ -92,7 +92,10 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form th:action="@{/tuotteet/{id}/muokkaa(id=${item.id})}" method="POST">
+              <form
+                th:action="@{/admin/tuotteet/{id}(id=${item.id})}"
+                method="POST"
+              >
                 <div class="mb-3">
                   <label for="itemName" class="form-label">Nimi</label>
                   <input
@@ -125,6 +128,40 @@
                     required
                   ></textarea>
                 </div>
+                <div class="mb-3">
+                  <label for="itemManufacturer" class="form-label"
+                    >Valmistaja</label
+                  >
+                  <select
+                    class="form-select"
+                    id="itemManufacturer"
+                    name="manufacturer.id"
+                  >
+                    <option
+                      th:each="manufacturer : ${manufacturers}"
+                      th:value="@{${manufacturer.id}}"
+                      th:selected="@{${manufacturer.id == item.manufacturer.id}}"
+                      th:text="@{${manufacturer.name}}"
+                    ></option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="itemSupplier" class="form-label"
+                    >Toimittaja</label
+                  >
+                  <select
+                    class="form-select"
+                    id="itemSupplier"
+                    name="supplier.id"
+                  >
+                    <option
+                      th:each="supplier : ${suppliers}"
+                      th:value="@{${supplier.id}}"
+                      th:selected="@{${supplier.id == item.supplier.id}}"
+                      th:text="@{${supplier.name}}"
+                    ></option>
+                  </select>
+                </div>
                 <button type="submit" class="btn btn-primary">
                   Tallenna muutokset
                 </button>
@@ -133,10 +170,7 @@
           </div>
         </div>
       </div>
-
     </main>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

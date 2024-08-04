@@ -10,15 +10,21 @@
   </head>
   <body>
     <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container" style="padding: 3rem 0;">
+    <main class="container" style="padding: 3rem 0">
       <h1>Kulutustuotteet</h1>
-      <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top: 3rem;">
+      <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top: 3rem">
         <div class="col" th:each="item : ${items}">
           <div class="card h-100">
-            <img th:src="@{${item.image}}" class="card-img-top" alt="Tuotekuva">
+            <img
+              th:src="@{${item.image}}"
+              class="card-img-top"
+              alt="Tuotekuva"
+            />
             <div class="card-body">
               <h5 class="card-title" th:text="${item.name}">Tuotteen nimi</h5>
-              <p class="card-text"><strong th:text="${item.price} + ' €'">Hinta</strong></p>
+              <p class="card-text">
+                <strong th:text="${item.price} + ' €'">Hinta</strong>
+              </p>
             </div>
           </div>
         </div>
