@@ -20,4 +20,5 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
   @Query(value = "SELECT i FROM Item i WHERE i.id < :id ORDER BY i.id DESC LIMIT 1")
   Optional<Item> findPreviousItem(@Param("id") Long id);
 
+  List<Item> findByManufacturerId(Long manufacturerId);
 }

@@ -12,7 +12,8 @@
   <body>
     <header th:replace="~{fragments/layout :: header}"></header>
     <main class="container mt-5">
-      <h1>Kaikki tuotteet</h1>
+      <a th:href="@{/admin}">Takaisin</a>
+      <h1 style="margin-top: 1rem;">Kaikki tuotteet</h1>
       <form
         id="categoryForm"
         method="get"
@@ -52,7 +53,7 @@
             <td th:text="${item.name}">Tuotteen nimi</td>
             <td th:text="${item.price}">0.00</td>
             <td>
-              <a th:href="@{/admin/tuotteet/{itemId}(itemId=${item.id})}"
+              <a th:href="@{/admin/tuotteet/{id}(id=${item.id})}"
                 >Avaa</a
               >
             </td>

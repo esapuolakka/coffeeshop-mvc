@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 public class Item {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="id")
   private Long id;
 
@@ -29,10 +29,9 @@ public class Item {
   @Column(name="hinta")
   private BigDecimal price;
 
-  @Lob
-  @Basic(fetch = FetchType.LAZY)
-  @Column(name="tuotekuva")
-  private byte[] image;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name="tuotekuva")
+  private Image image;
 
   @Column(name="lisätty")
   private LocalDateTime createdAt;
