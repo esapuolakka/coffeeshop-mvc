@@ -92,6 +92,7 @@ public class AdminController {
 
 
 
+
   @GetMapping("/valmistajat")
   public String allManufacturers(Model model) {
     List<Manufacturer> manufacturers = adminService.getAllManufacturers();
@@ -115,6 +116,14 @@ public class AdminController {
     return "redirect:/admin/valmistajat/" + id;
   }
 
+  @DeleteMapping("/valmistajat/{id}/poista")
+  public ResponseEntity<Void> deleteManufacturer(@PathVariable Long id) {
+    adminService.deleteManufacturer(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+
+
 
   @GetMapping("/toimittajat")
   public String allSuppliers(Model model) {
@@ -122,6 +131,31 @@ public class AdminController {
     model.addAttribute("suppliers", suppliers);
     return "adminSuppliers";
   }
+
+  @GetMapping("/toimittajat/{id}")
+  public String supplierDetailPage(@PathVariable Long id, Model model) {
+    Supplier supplier = adminService.getSupplierById(id);
+    List<Item> supplierItems = adminService.getItemsBySupplier(id);
+    model.addAttribute("supplier", supplier);
+    model.addAttribute("supplierItems", supplierItems);
+    return "adminSupplierDetails";
+  }
+
+  @PostMapping("/toimittajat/{id}")
+  public String updateSupplier(@PathVariable Long id, @ModelAttribute Supplier supplier) {
+    supplier.setId(id);
+    adminService.updateSupplier(supplier);
+    return "redirect:/admin/toimittajat/" + id;
+  }
+
+  @DeleteMapping("/toimittajat/{id}/poista")
+  public ResponseEntity<Void> deleteSupplier(@PathVariable Long id) {
+    adminService.deleteSupplier(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+
+
 
   @GetMapping("/lisaa")
   public String addNewItem(Model model) {

@@ -2,7 +2,6 @@ package com.websites.coffeeshop.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -32,6 +31,7 @@ public class AdminService {
   @Autowired
   private ImageRepository imageRepository;
 
+  
   public List<Item> getAllItems() {
     return itemRepository.findAll();
   }
@@ -55,7 +55,44 @@ public class AdminService {
     return previousItem.map(Item::getId).orElse(null);
   }
 
-  @Transactional
+  public Image getImageById(Long id) {
+    return imageRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Image not found"));
+  }
+
+  public List<Manufacturer> getAllManufacturers() {
+    return manufacturerRepository.findAll();
+  }
+
+  public Manufacturer getManufacturerById(Long id) {
+    return manufacturerRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
+  }
+
+  public Supplier getSupplierById(Long id) {
+    return supplierRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Supplier not found"));
+  }
+
+  public List<Item> getItemsByManufacturer(Long id) {
+    return itemRepository.findByManufacturerId(id);
+  }
+
+  public List<Item> getItemsBySupplier(Long id) {
+    return itemRepository.findBySupplierId(id);
+  }
+
+  public List<Supplier> getAllSuppliers() {
+    return supplierRepository.findAll();
+  }
+
+  public List<Image> getAllImages() {
+    return imageRepository.findAll();
+  }
+
+
+
+
   public Item updateItem(ItemDTO updatedItem, MultipartFile file) {
 
     Item existingItem = itemRepository.findById(updatedItem.getId())
@@ -138,19 +175,6 @@ public class AdminService {
     }
   }
 
-  public Image getImageById(Long id) {
-    return imageRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Image not found"));
-  }
-
-  public List<Manufacturer> getAllManufacturers() {
-    return manufacturerRepository.findAll();
-  }
-
-  public Manufacturer getManufacturerById(Long id) {
-    return manufacturerRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Manufacturer not found"));
-  }
 
   public Manufacturer updateManufacturer(Manufacturer manufacturer) {
     Manufacturer existingManufacturer = manufacturerRepository.findById(manufacturer.getId())
@@ -159,11 +183,9 @@ public class AdminService {
       if (manufacturer.getName() == null || manufacturer.getName().isEmpty()) {
         throw new IllegalArgumentException("Name cannot be empty");
       }
-
       if (manufacturer.getUrl() == null || manufacturer.getUrl().isEmpty()) {
         throw new IllegalArgumentException("URL cannot be empty");
       }
-
       if (existingManufacturer.getName().equals(manufacturer.getName()) &&
           existingManufacturer.getUrl().equals(manufacturer.getUrl())) {
         return existingManufacturer;
@@ -172,23 +194,53 @@ public class AdminService {
       return manufacturerRepository.save(manufacturer);
   }
 
-  public List<Item> getItemsByManufacturer(Long id) {
-    return itemRepository.findByManufacturerId(id);
+
+  public Supplier updateSupplier(Supplier supplier) {
+    Supplier existingSupplier = supplierRepository.findById(supplier.getId())
+      .orElseThrow(() -> new RuntimeException("Supplier not found"));
+
+      if (supplier.getName() == null || supplier.getName().isEmpty()) {
+        throw new IllegalArgumentException("Name cannot be empty");
+      }
+      if (supplier.getContactPerson() == null || supplier.getContactPerson().isEmpty()) {
+        throw new IllegalArgumentException("Contact person cannot be empty");
+      }
+      if (supplier.getContactPersonEmail() == null || supplier.getContactPersonEmail().isEmpty()) {
+        throw new IllegalArgumentException("Contact person email cannot be empty");
+      }
+      if (existingSupplier.getName().equals(supplier.getName()) &&
+          existingSupplier.getContactPerson().equals(supplier.getContactPerson()) &&
+          existingSupplier.getContactPersonEmail().equals(supplier.getContactPersonEmail())) {
+        return existingSupplier;
+      }
+
+      return supplierRepository.save(supplier);
   }
 
-  public List<Supplier> getAllSuppliers() {
-    return supplierRepository.findAll();
-  }
 
-  public List<Image> getAllImages() {
-    return imageRepository.findAll();
-  }
+
 
   public void deleteItem(Long id) {
     if (itemRepository.existsById(id)) {
       itemRepository.deleteById(id);
     } else {
       throw new RuntimeException("Item not found with id: " + id);
+    }
+  }
+
+  public void deleteManufacturer(Long id) {
+    if (manufacturerRepository.existsById(id)) {
+      manufacturerRepository.deleteById(id);
+    } else {
+      throw new RuntimeException("Manufacturer not found with id: " + id);
+    }
+  }
+
+  public void deleteSupplier(Long id) {
+    if (supplierRepository.existsById(id)) {
+      supplierRepository.deleteById(id);
+    } else {
+      throw new RuntimeException("Supplier not found with id: " + id);
     }
   }
 

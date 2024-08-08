@@ -21,4 +21,5 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
   Optional<Item> findPreviousItem(@Param("id") Long id);
 
   List<Item> findByManufacturerId(Long manufacturerId);
+  List<Item> findBySupplierId(Long supplierId);
 }
