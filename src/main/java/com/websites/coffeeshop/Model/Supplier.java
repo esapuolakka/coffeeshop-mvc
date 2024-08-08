@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Model;
+package com.websites.coffeeshop.model;
 
 import java.util.List;
 import jakarta.persistence.*;
@@ -21,10 +21,10 @@ public class Supplier {
   @Column(name="nimi")
   private String name;
 
-  @Column(name="yhteyshenkilö")
+  @Column(name="yhteyshenkilo")
   private String contactPerson;
 
-  @Column(name="yhteyshenkilön_email")
+  @Column(name="yhteyshenkilon_email")
   private String contactPersonEmail;
 
   @OneToMany(mappedBy="supplier")

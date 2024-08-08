@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Model;
+package com.websites.coffeeshop.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

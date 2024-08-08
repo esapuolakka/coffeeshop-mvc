@@ -33,7 +33,7 @@ INSERT INTO valmistaja (id, nimi, url) VALUES
 
 
 
-INSERT INTO toimittaja (id, nimi, yhteyshenkilö, yhteyshenkilön_email) VALUES
+INSERT INTO toimittaja (id, nimi, yhteyshenkilo, yhteyshenkilon_email) VALUES
 (1, 'Kahvi Co', 'Matti Meikäläinen', 'matti.meikalainen@kahvico.com'),
 (2, 'Kahvilat Oy', 'Anna Anttila', 'anna.anttila@kahvilatoy.fi'),
 (3, 'Kahviautomaatti Suomi', 'Pekka Peloton', 'pekka.peloton@kahviautomaatti.fi'),
@@ -47,7 +47,7 @@ INSERT INTO toimittaja (id, nimi, yhteyshenkilö, yhteyshenkilön_email) VALUES
 
 
 
-INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, toimittajaid, valmistajaid, lisätty) VALUES 
+INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, toimittajaid, valmistajaid, lisatty) VALUES 
 (1, 'Siemens EQ.6 Plus S500 kahvikone', 'Siemens EQ.6 Plus S500 -kahvikoneessa on SensoFlow-teknologia sekä kätevä OneTouch-toiminto, joiden ansiosta keität erinomaista kahvia hetkessä.', 1299, NULL, 1, 1, 1, NOW()),
 (2, 'De’Longhi Magnifica S ECAM 22.110', 'De’Longhi Magnifica S ECAM 22.110 -kahvikoneella valmistat herkullista espressoa ja suodatinkahvia yhdellä painalluksella.', 699, NULL, 1, 2, 2, NOW()),
 (3, 'Breville Barista Express', 'Breville Barista Express -kahvikone yhdistää kahvimyllyn ja kahvinkeittimen, mikä takaa tuoreuden ja laadun.', 899, NULL, 1, 3, 1, NOW()),
@@ -89,7 +89,7 @@ INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, toimittajaid, v
 (39, 'Breville BES990BSS Oracle Touch', 'Breville Oracle Touch on huipputason automaattinen kahvikone, joka tarjoaa täyden hallinnan kahvin valmistuksessa.', 2999, NULL, 1, 4, 3, NOW()),
 (40, 'Melitta Caffeo CI', 'Melitta Caffeo CI on automaattinen kahvikone, joka mahdollistaa henkilökohtaisten kahvijuaiden tallentamisen.', 1199, NULL, 1, 5, 4, NOW());
 
-INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, toimittajaid, valmistajaid, lisätty) VALUES 
+INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, toimittajaid, valmistajaid, lisatty) VALUES 
 (41, 'Lavazza Qualità Rossa', 'Lavazza Qualità Rossa on tasapainoinen ja täyteläinen suodatinkahvi, joka tarjoaa maukasta kahvinautintoa.', 12.99, NULL, 2, 1, 1, NOW()),
 (42, 'Illy Espresso Medium Roast', 'Illy Espresso Medium Roast on pehmeä ja aromaattinen espresso, joka on valmistettu korkealaatuisista kahvipavuista.', 14.99, NULL, 2, 2, 2, NOW()),
 (43, 'Peet’s Coffee Major Dickason’s Blend', 'Peet’s Coffee Major Dickason’s Blend on tumma paahtokahvi, joka on täynnä makua ja aromia.', 15.49, NULL, 2, 3, 1, NOW()),
@@ -132,7 +132,9 @@ INSERT INTO tuote (id, nimi, kuvaus, hinta, tuotekuva, osastoid, toimittajaid, v
 (80, 'Hazelnut Coffee', 'Hazelnut Coffee on herkullinen makukahvi, jossa on pähkinäinen aromi.', 13.99, NULL, 2, 5, 4, NOW());
 
 
-
+INSERT INTO rooli (id, rooli) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO rooli (id, rooli) VALUES (2, 'ROLE_USER');
+INSERT INTO rooli (id, rooli) VALUES (3, 'ROLE_VIP');
 
 
 

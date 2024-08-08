@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Model;
+package com.websites.coffeeshop.model;
 
 import java.util.Set;
 
@@ -26,8 +26,8 @@ public class Role {
   private Long id;
 
   @Column(name="rooli")
-  private String role;
+  private String name;
   
-  @ManyToMany(mappedBy = "role")
+  @ManyToMany(mappedBy = "roles")
   private Set<User> users;
 }

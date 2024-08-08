@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Service;
+package com.websites.coffeeshop.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Optional;
 import java.io.IOException;
 
-import com.websites.coffeeshop.Model.Image;
-import com.websites.coffeeshop.Model.Item;
-import com.websites.coffeeshop.Model.ItemDTO;
-import com.websites.coffeeshop.Model.Manufacturer;
-import com.websites.coffeeshop.Model.Supplier;
-import com.websites.coffeeshop.Repository.ImageRepository;
-import com.websites.coffeeshop.Repository.ItemRepository;
-import com.websites.coffeeshop.Repository.ManufacturerRepository;
-import com.websites.coffeeshop.Repository.SupplierRepository;
+import com.websites.coffeeshop.repository.ImageRepository;
+import com.websites.coffeeshop.repository.ItemRepository;
+import com.websites.coffeeshop.repository.ManufacturerRepository;
+import com.websites.coffeeshop.repository.SupplierRepository;
+import com.websites.coffeeshop.model.Image;
+import com.websites.coffeeshop.model.Item;
+import com.websites.coffeeshop.model.ItemDTO;
+import com.websites.coffeeshop.model.Manufacturer;
+import com.websites.coffeeshop.model.Supplier;
 
 @Service
 public class AdminService {

@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Controller;
+package com.websites.coffeeshop.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,15 +17,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.websites.coffeeshop.Model.Image;
-import com.websites.coffeeshop.Model.Item;
-import com.websites.coffeeshop.Model.Manufacturer;
-import com.websites.coffeeshop.Service.AdminService;
-import com.websites.coffeeshop.Model.Supplier;
-import com.websites.coffeeshop.Model.ItemDTO;
+import com.websites.coffeeshop.model.Image;
+import com.websites.coffeeshop.model.Item;
+import com.websites.coffeeshop.model.ItemDTO;
+import com.websites.coffeeshop.model.Manufacturer;
+import com.websites.coffeeshop.model.Supplier;
+import com.websites.coffeeshop.service.AdminService;
 
 @Controller
 @RequestMapping("/admin")

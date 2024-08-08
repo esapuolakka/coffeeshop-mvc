@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Model;
+package com.websites.coffeeshop.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class Item {
   @JoinColumn(name="tuotekuva")
   private Image image;
 
-  @Column(name="lisätty")
+  @Column(name="lisatty")
   private LocalDateTime createdAt;
 
   @ManyToOne

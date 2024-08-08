@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Repository;
+package com.websites.coffeeshop.repository;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.websites.coffeeshop.Model.Item;
+import com.websites.coffeeshop.model.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long>{
 

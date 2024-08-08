@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Controller;
+package com.websites.coffeeshop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import java.util.List;
 
-import com.websites.coffeeshop.Model.Image;
-import com.websites.coffeeshop.Model.ItemWithImageUrl;
-import com.websites.coffeeshop.Service.CoffeeShopService;
+import com.websites.coffeeshop.model.Image;
+import com.websites.coffeeshop.model.ItemWithImageUrl;
+import com.websites.coffeeshop.service.CoffeeShopService;
 
 @Controller
 public class CoffeeShopController {

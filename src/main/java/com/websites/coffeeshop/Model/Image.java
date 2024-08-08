@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Model;
+package com.websites.coffeeshop.model;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -35,7 +35,7 @@ public class Image {
   private Long size;
 
   @Lob
-  @Column(name="sisältö")
+  @Column(name="sisalto")
   @Basic(fetch = FetchType.LAZY)
   private byte[] content;
 }

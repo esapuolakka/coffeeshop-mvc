@@ -1,14 +1,14 @@
-package com.websites.coffeeshop.Service;
+package com.websites.coffeeshop.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.websites.coffeeshop.Model.Image;
-import com.websites.coffeeshop.Model.Item;
-import com.websites.coffeeshop.Model.ItemWithImageUrl;
-import com.websites.coffeeshop.Repository.ImageRepository;
-import com.websites.coffeeshop.Repository.ItemRepository;
+import com.websites.coffeeshop.repository.ImageRepository;
+import com.websites.coffeeshop.repository.ItemRepository;
+import com.websites.coffeeshop.model.Image;
+import com.websites.coffeeshop.model.Item;
+import com.websites.coffeeshop.model.ItemWithImageUrl;
 
 @Service
 public class CoffeeShopService {

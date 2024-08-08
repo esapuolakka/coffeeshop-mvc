@@ -1,4 +1,4 @@
-package com.websites.coffeeshop.Model;
+package com.websites.coffeeshop.model;
 
 import java.util.Set;
 
@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="käyttäjä")
+@Table(name="kayttaja")
 public class User {
 
   @Id
@@ -27,14 +28,18 @@ public class User {
   @Column(name="id")
   private Long id;
 
-  @Column(name="käyttäjänimi")
+  @Column(name="kayttajanimi")
   private String username;
 
   @Column(name="salasana")
   private String password;
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @JoinColumn(name="rooli_id", nullable = false)
+  @JoinTable(
+        name = "kayttaja_roolit",
+        joinColumns = @JoinColumn(name = "kayttaja_id"),
+        inverseJoinColumns = @JoinColumn(name = "rooli_id")
+    )
   @Column(name="rooli")
-  private Set<Role> role;
+  private Set<Role> roles;
 }
