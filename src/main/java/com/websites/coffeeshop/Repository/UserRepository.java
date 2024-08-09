@@ -1,8 +1,7 @@
 package com.websites.coffeeshop.repository;
 
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.Optional;
 import com.websites.coffeeshop.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{

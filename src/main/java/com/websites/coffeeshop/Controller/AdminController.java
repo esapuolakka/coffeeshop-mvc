@@ -156,13 +156,13 @@ public class AdminController {
 
 
 
-  @GetMapping("/lisaa")
-  public String addNewItem(Model model) {
-    return "adminAddItem";
-  }
+  // @GetMapping("/lisaa")
+  // public String addNewItem(Model model) {
+  //   return "adminAddItem";
+  // }
 
-  @PostMapping("/lisaa")
-  public String addItem(Model model) {
-    return "redirect:/adminItems";
-  }
+  // @PostMapping("/lisaa")
+  // public String addItem(Model model) {
+  //   return "redirect:/adminItems";
+  // }
 }

@@ -1,12 +1,12 @@
-INSERT INTO osasto (id, nimi, osastoid) VALUES (1, 'Kahvilaitteet', 0);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (2, 'Kulutustuotteet', 0);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (3, 'Espressolaitteet', 1);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (4, 'Suodatinkahvi', 1);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (5, 'Kahvimyllyt', 1);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (6, 'Suodattimet', 2);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (7, 'Kahvi', 2);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (8, 'Espressot', 7);
-INSERT INTO osasto (id, nimi, osastoid) VALUES (9, 'Suodatinkahvit', 7);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (1, 'kahvilaitteet', 0);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (2, 'kulutustuotteet', 0);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (3, 'espressolaitteet', 1);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (4, 'suodatinkahvi', 1);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (5, 'kahvimyllyt', 1);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (6, 'suodattimet', 2);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (7, 'kahvi', 2);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (8, 'espressot', 7);
+INSERT INTO osasto (id, nimi, osastoid) VALUES (9, 'suodatinkahvit', 7);
 
 
 

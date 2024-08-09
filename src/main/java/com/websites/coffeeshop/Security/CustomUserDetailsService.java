@@ -1,10 +1,9 @@
 package com.websites.coffeeshop.security;
 
 import com.websites.coffeeshop.repository.UserRepository;
-import com.websites.coffeeshop.model.Role;
 import com.websites.coffeeshop.model.User;
 
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,10 +21,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
+        String userName = user.getUsername();
+        String password = user.getPassword();
+        String[] roles = user.getRoles().stream()
+                .map(role -> role.getName())
+                .toArray(String[]::new);
+
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRoles().stream().map(Role::getName).toArray(String[]::new))
+                .withUsername(userName)
+                .password(password)
+                .authorities(roles)
                 .build();
     }
 }

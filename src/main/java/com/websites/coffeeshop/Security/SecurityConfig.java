@@ -30,8 +30,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "VIP")
+                .requestMatchers("/user").hasAnyRole("USER", "ADMIN", "VIP")
                 .requestMatchers("/login/**").permitAll()
+                .requestMatchers("/register/**").permitAll()
                 .requestMatchers("/etusivu").permitAll()
                 .requestMatchers("/tuotteet/**").permitAll()
                 .requestMatchers("/images/**").permitAll()
@@ -42,13 +43,13 @@ public class SecurityConfig {
                 .key("mySecretKey"))
             .formLogin(form -> form
                 .loginPage("/login")
+                .defaultSuccessUrl("/user", true)
                 .permitAll())
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/logout?logout")
+                .logoutSuccessUrl("/etusivu")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID"))
-            .httpBasic();
+                .deleteCookies("JSESSIONID"));
         return http.build();
     }
 }

@@ -21,6 +21,11 @@ public class CoffeeShopController {
   @Autowired
   private CoffeeShopService coffeeShopService;
   
+  @GetMapping("/")
+  public String redirectHome() {
+    return "redirect:/etusivu";
+  }
+
   @GetMapping("/etusivu")
   public String homepage(Model model) {
     return "index";
@@ -29,7 +34,7 @@ public class CoffeeShopController {
   @GetMapping("/tuotteet")
   public String redirect() {
     return "redirect:/tuotteet/kahvilaitteet";
-  } 
+  }
 
   @GetMapping("/tuotteet/{tuotekategoria}")
   public String itemsPage(@PathVariable String tuotekategoria, Model model) {
@@ -43,7 +48,7 @@ public class CoffeeShopController {
   public String equipmentDetailPage(@PathVariable String tuotekategoria, @PathVariable Long id, Model model) {
     model.addAttribute("item", coffeeShopService.getItemById(id));
     return "itemDetails";
-}
+  }
 
   @GetMapping("/tuotteet/{tuotekategoria}/{id}/kuva")
   public ResponseEntity<byte[]> equipmentDetailImage(@PathVariable String tuotekategoria, @PathVariable Long id) {
@@ -51,7 +56,7 @@ public class CoffeeShopController {
     final HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.parseMediaType(image.getMediaType()));
     headers.setContentLength(image.getSize());
-
     return new ResponseEntity<>(image.getContent(), headers, HttpStatus.OK);
   }
+
 }

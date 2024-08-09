@@ -37,20 +37,6 @@ public class CoffeeShopService {
         .orElseThrow(() -> new RuntimeException("Image not found"));
   }
 
-  // public List<String> getAllImageUrls(Long id) {
-  // List<Item> items = getAllByCategory(id);
-  // List<String> imageUrls = items.stream()
-  // .map(item -> {
-  // if (item.getImage() != null) {
-  // return "/kahvilaitteet/" + item.getImage().getId() + "/kuva";
-  // } else {
-  // return "/images/No_Image_Available.png";
-  // }
-  // })
-  // .toList();
-  // return imageUrls;
-  // }
-
   public List<ItemWithImageUrl> getAllItemsWithImageUrls(Long categoryId) {
     String categoryPath = categoryId == 1 ? "/tuotteet/kahvilaitteet/" : "/tuotteet/kulutustuotteet/";
     List<Item> items = getAllByCategory(categoryId);

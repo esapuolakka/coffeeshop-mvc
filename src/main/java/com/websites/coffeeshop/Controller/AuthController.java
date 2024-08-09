@@ -3,20 +3,24 @@ package com.websites.coffeeshop.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.websites.coffeeshop.model.User;
-import com.websites.coffeeshop.model.UserRegistrationDto;
 import com.websites.coffeeshop.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
+// import java.util.logging.Logger;
 
 @Controller
 public class AuthController {
 
+  // private static final Logger logger = Logger.getLogger(AuthController.class.getName());
+
   @Autowired
-  private  UserService userService;
+  private UserService userService;
 
   @GetMapping("/login")
   public String login() {
@@ -30,16 +34,35 @@ public class AuthController {
   }
 
   @PostMapping("/register")
-  public String registerUser(@ModelAttribute("user") UserRegistrationDto userDto, Model model) {
-    if (userService.existsByUsername(userDto.getUsername())) {
-      model.addAttribute("error", "Username already exists");
+  public String register(@RequestParam String username, @RequestParam String password,
+      @RequestParam String confirmPassword, Model model) {
+    if (userService.existsByUsername(username)) {
+      model.addAttribute("errorMessage", "Käyttäjänimi on jo käytössä.");
       return "register";
     }
-    if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-      model.addAttribute("error", "Salasanat eivät täsmää");
+
+    if (!password.equals(confirmPassword)) {
+      model.addAttribute("errorMessage", "Salasanat eivät täsmää.");
       return "register";
     }
-    userService.registerUser(userDto.getUsername(), userDto.getPassword());
+    userService.registerUser(username, password);
     return "redirect:/login";
   }
+
+  @GetMapping("/user")
+  public String user(Model model, Authentication authentication) {
+    if (authentication == null || !authentication.isAuthenticated()) {
+      model.addAttribute("errorMessage", "Kirjaudu sisään nähdäksesi tämän sivun.");
+      return "redirect:/login";
+    }
+    model.addAttribute("username", authentication.getName());
+    return "user";
+  }
+
+  @GetMapping("/logout")
+  public String logout(HttpSession session) {
+    session.invalidate();
+    return "redirect:/etusivu";
+  }
+
 }
