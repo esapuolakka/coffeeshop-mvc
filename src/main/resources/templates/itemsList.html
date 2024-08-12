@@ -19,10 +19,11 @@
   <body>
     <header th:replace="~{fragments/layout :: header}"></header>
     <main class="container" style="padding: 3rem 0">
-      <h1 th:text="${itemsWithImageUrls.get(0).item.category.name}">
+      <h1 th:if="${itemsWithImageUrls.size() > 0}" th:text="${itemsWithImageUrls.get(0).item.category.name}">
         Tuotekategoria
       </h1>
-      <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top: 3rem">
+      <h1 th:if="${itemsWithImageUrls.size() == 0}">Ei yhtään tuotetta</h1>
+      <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top: 3rem" th:if="${itemsWithImageUrls.size() > 0}">
         <div class="col" th:each="itemWithImageUrl : ${itemsWithImageUrls}">
           <div class="card h-100">
             <a

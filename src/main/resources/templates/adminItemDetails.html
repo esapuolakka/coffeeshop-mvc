@@ -129,17 +129,6 @@
                     required
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="itemPrice" class="form-label">Hinta</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="itemPrice"
-                    name="price"
-                    th:value="${item.price}"
-                    required
-                  />
-                </div>
                 <div class="mb-4">
                   <label for="itemDescription" class="form-label">Kuvaus</label>
                   <textarea
@@ -149,6 +138,40 @@
                     th:text="${item.description}"
                     required
                   ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="itemPrice" class="form-label">Hinta</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    class="form-control"
+                    id="itemPrice"
+                    name="price"
+                    th:value="${item.price}"
+                    required
+                  />
+                </div>
+                <div class="mb-5">
+                  <label for="itemDepartment" class="form-label">
+                    Tuotekategoria
+                    <i>/ Huom. tällä hetkellä vain 1 ja 2 ovat käytössä</i>
+                  </label>
+                  <select
+                    class="form-select"
+                    id="itemDepartment"
+                    name="categoryId"
+                  >
+                    <option value="" disabled selected>
+                      Valitse kategoria
+                    </option>
+                    <option
+                      th:each="category : ${categories}"
+                      th:value="${category.id}"
+                      th:text="${category.id + '. ' + category.name}"
+                      th:selected="${category.id == item.category.id}"
+                    ></option>
+                  </select>
                 </div>
                 <div class="mb-3">
                   <label for="itemManufacturer" class="form-label"

@@ -2,6 +2,7 @@ package com.websites.coffeeshop.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.websites.coffeeshop.model.Category;
 import com.websites.coffeeshop.model.Image;
 import com.websites.coffeeshop.model.Item;
 import com.websites.coffeeshop.model.ItemDTO;
@@ -30,6 +32,8 @@ import com.websites.coffeeshop.service.AdminService;
 @RequestMapping("/admin")
 public class AdminController {
 
+  private static final Logger logger = Logger.getLogger(AdminController.class.getName());
+
   @Autowired
   private AdminService adminService;
 
@@ -40,9 +44,25 @@ public class AdminController {
 
   @GetMapping("/tuotteet")
   public String allItemsList(@RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, Model model) {
-    model.addAttribute("items", adminService.getAllByCategory(categoryId));
+    List<Item> items = adminService.getAllByCategory(categoryId);
+    List<Manufacturer> manufacturers = adminService.getAllManufacturers();
+    List<Supplier> suppliers = adminService.getAllSuppliers();
+    List<Category> categories = adminService.getAllCategories();
+
+    model.addAttribute("items", items);
     model.addAttribute("selectedCategory", categoryId);
+    model.addAttribute("manufacturers", manufacturers);
+    model.addAttribute("suppliers", suppliers);
+    model.addAttribute("categories", categories);
+    model.addAttribute("selectedCategory", categoryId);
+
     return "adminItems";
+  }
+
+  @PostMapping("/tuotteet")
+  public ResponseEntity<Item> addNewItem(@ModelAttribute ItemDTO itemDTO, @RequestParam(value = "image", required = false) MultipartFile file) {
+    Item newItem = adminService.addNewItem(itemDTO, file);
+    return new ResponseEntity<>(newItem, HttpStatus.CREATED);
   }
 
   @GetMapping("/tuotteet/{id}")
@@ -53,12 +73,16 @@ public class AdminController {
     List<Manufacturer> manufacturers = adminService.getAllManufacturers();
     List<Supplier> suppliers = adminService.getAllSuppliers();
     List<Image> images = adminService.getAllImages();
+    List<Category> categories = adminService.getAllCategories();
+    
     model.addAttribute("item", item);
     model.addAttribute("nextItem", nextItem);
     model.addAttribute("previousItem", previousItem);
     model.addAttribute("manufacturers", manufacturers);
     model.addAttribute("suppliers", suppliers);
     model.addAttribute("images", images);
+    model.addAttribute("categories", categories);
+
     return "adminItemDetails";
   }
 
@@ -77,6 +101,7 @@ public class AdminController {
       @PathVariable Long id,
       @ModelAttribute ItemDTO itemDTO,
       @RequestParam(value = "image", required = false) MultipartFile file) throws IOException {
+    logger.warning("ItemDTO: " + itemDTO);
     itemDTO.setId(id);
     adminService.updateItem(itemDTO, file);
 
@@ -89,14 +114,17 @@ public class AdminController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-
-
-
   @GetMapping("/valmistajat")
   public String allManufacturers(Model model) {
     List<Manufacturer> manufacturers = adminService.getAllManufacturers();
     model.addAttribute("manufacturers", manufacturers);
     return "adminManufacturers";
+  }
+
+  @PostMapping("/valmistajat")
+  public ResponseEntity<Manufacturer> addNewManufacturer(@ModelAttribute Manufacturer manufacturer) {
+    Manufacturer newManufacturer = adminService.addManufacturer(manufacturer);
+    return new ResponseEntity<>(newManufacturer, HttpStatus.CREATED);
   }
 
   @GetMapping("/valmistajat/{id}")
@@ -121,14 +149,17 @@ public class AdminController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-
-
-
   @GetMapping("/toimittajat")
   public String allSuppliers(Model model) {
     List<Supplier> suppliers = adminService.getAllSuppliers();
     model.addAttribute("suppliers", suppliers);
     return "adminSuppliers";
+  }
+
+  @PostMapping("/toimittajat")
+  public ResponseEntity<Supplier> addNewSupplier(@ModelAttribute Supplier supplier) {
+    Supplier newSupplier = adminService.addSupplier(supplier);
+    return new ResponseEntity<>(newSupplier, HttpStatus.CREATED);
   }
 
   @GetMapping("/toimittajat/{id}")
@@ -152,17 +183,4 @@ public class AdminController {
     adminService.deleteSupplier(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
-
-
-
-
-  // @GetMapping("/lisaa")
-  // public String addNewItem(Model model) {
-  //   return "adminAddItem";
-  // }
-
-  // @PostMapping("/lisaa")
-  // public String addItem(Model model) {
-  //   return "redirect:/adminItems";
-  // }
 }

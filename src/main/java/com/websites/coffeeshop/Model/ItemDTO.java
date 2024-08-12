@@ -13,4 +13,5 @@ public class ItemDTO {
   private Manufacturer manufacturer;
   private Supplier supplier;
   private Long imageId;
+  private Long categoryId;
 }

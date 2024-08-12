@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -43,6 +44,12 @@ public class UserService {
     userRepository.save(user);
 
     return new ResponseEntity<>("Registration successful", HttpStatus.OK);
+  }
+
+  @Transactional
+  public ResponseEntity<String> deleteUser(String username) {
+    userRepository.deleteUserByUsername(username);
+    return new ResponseEntity<>("User deleted", HttpStatus.OK);
   }
 
 

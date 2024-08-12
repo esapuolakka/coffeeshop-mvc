@@ -13,33 +13,53 @@
     <header th:replace="~{fragments/layout :: header}"></header>
     <main class="container mt-5">
       <a th:href="@{/admin}">Takaisin</a>
-      <h1 style="margin-top: 1rem;">Kaikki tuotteet</h1>
-      <form
-        id="categoryForm"
-        method="get"
-        action="/admin/tuotteet"
-        style="margin-top: 3rem; width: 30%; min-width: 200px"
+      <h1 style="margin-top: 1rem">Kaikki tuotteet</h1>
+      <div
+        class="row row-cols-1 row-cols-md-4 g-4"
+        style="display: flex; justify-content: space-between"
       >
-        <div class="mb-3">
-          <label for="categorySelect" class="form-label"
-            >Valitse kategoria</label
+        <form
+          class="col"
+          id="categoryForm"
+          method="get"
+          action="/admin/tuotteet"
+          style="margin-top: 3rem; width: 30%; min-width: 200px"
+        >
+          <div class="mb-3">
+            <label for="categorySelect" class="form-label"
+              >Valitse kategoria</label
+            >
+            <select
+              class="form-select"
+              id="categorySelect"
+              name="categoryId"
+              onchange="document.getElementById('categoryForm').submit();"
+            >
+              <option value="1" th:selected="${selectedCategory == 1}">
+                Kahvilaitteet
+              </option>
+              <option value="2" th:selected="${selectedCategory == 2}">
+                Kulutustuotteet
+              </option>
+            </select>
+          </div>
+        </form>
+        <div class="col" style="align-content: end; padding-bottom: 1rem">
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addModal"
           >
-          <select
-            class="form-select"
-            id="categorySelect"
-            name="categoryId"
-            onchange="document.getElementById('categoryForm').submit();"
-          >
-            <option value="1" th:selected="${selectedCategory == 1}">
-              Kahvilaitteet
-            </option>
-            <option value="2" th:selected="${selectedCategory == 2}">
-              Kulutustuotteet
-            </option>
-          </select>
+            Lisää uusi tuote
+          </button>
         </div>
-      </form>
-      <table class="table table-striped">
+      </div>
+
+      <div th:if="${items.empty}">
+        <p>No items found.</p>
+      </div>
+
+      <table class="table table-striped" th:if="${not items.empty}">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -53,14 +73,184 @@
             <td th:text="${item.name}">Tuotteen nimi</td>
             <td th:text="${item.price}">0.00</td>
             <td>
-              <a th:href="@{/admin/tuotteet/{id}(id=${item.id})}"
-                >Avaa</a
-              >
+              <a th:href="@{/admin/tuotteet/{id}(id=${item.id})}">Avaa</a>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <div
+        class="modal fade"
+        id="addModal"
+        tabindex="-1"
+        aria-labelledby="addModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addModalLabel">Tuotteet tiedot</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form
+                th:action="@{/admin/tuotteet}"
+                method="POST"
+                enctype="multipart/form-data"
+                onsubmit="handleAddSubmit(event, this);"
+              >
+                <div class="mb-3">
+                  <label for="itemName" class="form-label">Nimi</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="itemName"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="itemDescription" class="form-label">Kuvaus</label>
+                  <textarea
+                    class="form-control"
+                    id="itemDescription"
+                    name="description"
+                    required
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="itemPrice" class="form-label">Hinta</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    class="form-control"
+                    id="itemPrice"
+                    name="price"
+                    required
+                  />
+                </div>
+                <div class="mb-5">
+                  <label for="itemDepartment" class="form-label">
+                    Tuotekategoria
+                    <i>/ Huom. tällä hetkellä vain 1 ja 2 ovat käytössä</i>
+                  </label>
+                  <select
+                    class="form-select"
+                    id="itemDepartment"
+                    name="categoryId"
+                  >
+                    <option value="" disabled selected>
+                      Valitse kategoria
+                    </option>
+                    <option
+                      th:each="category : ${categories}"
+                      th:value="${category.id}"
+                      th:text="${category.id + '. ' + category.name}"
+                      th:selected="${category.id == selectedCategory}"
+                    ></option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="itemManufacturer" class="form-label"
+                    >Valmistaja</label
+                  >
+                  <select
+                    class="form-select"
+                    id="itemManufacturer"
+                    name="manufacturer.id"
+                  >
+                    <option
+                      th:each="manufacturer : ${manufacturers}"
+                      th:value="@{${manufacturer.id}}"
+                      th:text="@{${manufacturer.name}}"
+                    ></option>
+                  </select>
+                </div>
+                <div class="mb-5">
+                  <label for="itemSupplier" class="form-label"
+                    >Toimittaja</label
+                  >
+                  <select
+                    class="form-select"
+                    id="itemSupplier"
+                    name="supplier.id"
+                    required
+                  >
+                    <option
+                      th:each="supplier : ${suppliers}"
+                      th:value="@{${supplier.id}}"
+                      th:text="@{${supplier.name}}"
+                    ></option>
+                  </select>
+                </div>
+                <div class="mb-5">
+                  <label class="form-label" for="itemImage"
+                    >Lataa kuva
+                    <i
+                      >kuva tulee olla PNG tai JPG muodossa. (suosituskoko:
+                      400px x 400px)</i
+                    ></label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="itemImage"
+                    name="image"
+                    accept="image/png, image/jpeg"
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">
+                  Tallenna muutokset
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const addModal = document.getElementById("addModal");
+        addModal.addEventListener("hide.bs.modal", function () {
+          const form = addModal.querySelector("form");
+          form.reset();
+        });
+
+        function handleAddSubmit(event, form) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          fetch(form.action, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (response.ok) {
+                const modal = bootstrap.Modal.getInstance(addModal);
+                modal.hide();
+                window.location.reload();
+              } else {
+                alert("Lisääminen epäonnistui.");
+              }
+            })
+            .catch((error) => {
+              console.error("Virhe:", error);
+              alert("Lisäämisessä tapahtui virhe.");
+            });
+        }
+        const form = addModal.querySelector("form");
+        form.addEventListener("submit", function (event) {
+          handleAddSubmit(event, form);
+        });
+      });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

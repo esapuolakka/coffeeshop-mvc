@@ -13,14 +13,24 @@
     <header th:replace="~{fragments/layout :: header}"></header>
     <main class="container mt-5">
       <a th:href="@{/admin}">Takaisin</a>
-      <h1 style="margin-top: 1rem;">Kaikki valmistajat</h1>
+      <h1 style="margin-top: 1rem">Kaikki valmistajat</h1>
+      <div class="container">
+        <div style="display: flex; justify-content: end;">
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addModal"
+          >
+            Lisää uusi valmistaja
+          </button>
+        </div>
+      </div>
       <form
         id="categoryForm"
         method="get"
         action="/admin/valmistajat"
-        style="margin-top: 3rem; width: 30%; min-width: 200px"
-      >
-      </form>
+        style="margin-top: 1rem; width: 30%; min-width: 200px"
+      ></form>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -42,7 +52,97 @@
           </tr>
         </tbody>
       </table>
+      <div
+        class="modal fade"
+        id="addModal"
+        tabindex="-1"
+        aria-labelledby="addModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addModalLabel">
+                Lisää Valmistaja
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form
+                th:action="@{/admin/valmistajat}"
+                method="POST"
+                enctype="multipart/form-data"
+                onsubmit="handleAddSubmit(event, this);"
+              >
+                <div class="mb-3">
+                  <label for="manufacturerName" class="form-label">Nimi</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="manufacturerName"
+                    name="name"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="manufacturerUrl" class="form-label">Url-osoite</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="manufacturerUrl"
+                    name="url"
+                    required
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">
+                  Tallenna
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const addModal = document.getElementById("addModal");
+        addModal.addEventListener("hide.bs.modal", function () {
+          const form = addModal.querySelector("form");
+          form.reset();
+        });
+
+        function handleAddSubmit(event, form) {
+          event.preventDefault();
+          const formData = new FormData(form);
+          fetch(form.action, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (response.ok) {
+                const modal = bootstrap.Modal.getInstance(addModal);
+                modal.hide();
+                window.location.reload();
+              } else {
+                alert("Lisääminen epäonnistui.");
+              }
+            })
+            .catch((error) => {
+              console.error("Virhe:", error);
+              alert("Lisäämisessä tapahtui virhe.");
+            });
+        }
+        const form = addModal.querySelector("form");
+        form.addEventListener("submit", function (event) {
+          handleAddSubmit(event, form);
+        });
+      });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
