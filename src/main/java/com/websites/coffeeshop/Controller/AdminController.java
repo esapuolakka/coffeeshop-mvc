@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.websites.coffeeshop.model.Category;
 import com.websites.coffeeshop.model.Image;
@@ -26,7 +28,9 @@ import com.websites.coffeeshop.model.Item;
 import com.websites.coffeeshop.model.ItemDTO;
 import com.websites.coffeeshop.model.Manufacturer;
 import com.websites.coffeeshop.model.Supplier;
+import com.websites.coffeeshop.model.User;
 import com.websites.coffeeshop.service.AdminService;
+import com.websites.coffeeshop.service.UserService;
 
 @Controller
 @RequestMapping("/admin")
@@ -36,6 +40,9 @@ public class AdminController {
 
   @Autowired
   private AdminService adminService;
+
+  @Autowired
+  private UserService userService;
 
   @GetMapping
   public String adminHome(Model model) {
@@ -60,7 +67,8 @@ public class AdminController {
   }
 
   @PostMapping("/tuotteet")
-  public ResponseEntity<Item> addNewItem(@ModelAttribute ItemDTO itemDTO, @RequestParam(value = "image", required = false) MultipartFile file) {
+  public ResponseEntity<Item> addNewItem(@ModelAttribute ItemDTO itemDTO,
+      @RequestParam(value = "image", required = false) MultipartFile file) {
     Item newItem = adminService.addNewItem(itemDTO, file);
     return new ResponseEntity<>(newItem, HttpStatus.CREATED);
   }
@@ -74,7 +82,7 @@ public class AdminController {
     List<Supplier> suppliers = adminService.getAllSuppliers();
     List<Image> images = adminService.getAllImages();
     List<Category> categories = adminService.getAllCategories();
-    
+
     model.addAttribute("item", item);
     model.addAttribute("nextItem", nextItem);
     model.addAttribute("previousItem", previousItem);
@@ -182,5 +190,29 @@ public class AdminController {
   public ResponseEntity<Void> deleteSupplier(@PathVariable Long id) {
     adminService.deleteSupplier(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @GetMapping("/kayttajat")
+  public String allUsers(Model model) {
+    List<User> users = userService.getAllUsers();
+    model.addAttribute("users", users);
+    return "adminUsers";
+  }
+
+  @PostMapping("/kayttajat/{id}")
+  public String saveUserRole(@PathVariable Long id, @RequestParam String role) {
+    userService.updateUserRole(id, role);
+    return "redirect:/admin/kayttajat";
+  }
+
+  @PostMapping("/kayttajat/{id}/poista")
+  public String deleteUser(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    try {
+      userService.deleteUserById(id);
+      redirectAttributes.addFlashAttribute("successMessage", "Käyttäjä poistettu onnistuneesti.");
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("errorMessage", "Käyttäjän poistaminen epäonnistui.");
+    }
+    return "redirect:/admin/kayttajat";
   }
 }

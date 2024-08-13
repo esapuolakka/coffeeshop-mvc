@@ -30,6 +30,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(HttpMethod.DELETE, "/user").hasAnyRole("USER", "VIP", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/user").hasAnyRole("USER", "VIP", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/admin/kayttajat").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                 .requestMatchers("/user").hasAnyRole("USER", "ADMIN", "VIP")

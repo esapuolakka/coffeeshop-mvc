@@ -3,7 +3,6 @@ package com.websites.coffeeshop.security;
 import com.websites.coffeeshop.repository.UserRepository;
 import com.websites.coffeeshop.model.User;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

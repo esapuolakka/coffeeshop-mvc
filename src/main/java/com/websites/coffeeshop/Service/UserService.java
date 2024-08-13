@@ -34,12 +34,13 @@ public class UserService {
     user.setUsername(username);
     user.setPassword(passwordEncoder.encode(password));
 
-    Role userRole = roleRepository.findByName("ROLE_USER");
+    Role userRole = roleRepository.findByName("ROLE_USER")
+        .orElseThrow(() -> new RuntimeException("Role not found: ROLE_USER"));
 
     if (userRole == null) {
       return new ResponseEntity<>("Role not found: ROLE_USER", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     user.setRoles(new HashSet<>(Set.of(userRole)));
     userRepository.save(user);
 
@@ -52,8 +53,30 @@ public class UserService {
     return new ResponseEntity<>("User deleted", HttpStatus.OK);
   }
 
-
   public boolean existsByUsername(String username) {
     return userRepository.existsByUsername(username);
+  }
+
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
+  }
+
+  public void updateUserRole(Long userId, String roleName) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Käyttäjää ei löydy"));
+    Role role = roleRepository.findByName(roleName).orElseThrow(() -> new IllegalArgumentException("Roolia ei löydy"));
+
+    Set<Role> roles = user.getRoles();
+
+    if (roleName.equals("ROLE_VIP")) {
+      roles.add(role);
+    } else {
+      roles.removeIf(r -> r.getName().equals("ROLE_VIP"));
+    }
+
+    userRepository.save(user);
+  }
+
+  public void deleteUserById(Long id) {
+    userRepository.deleteById(id);
   }
 }
