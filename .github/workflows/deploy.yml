@@ -31,4 +31,4 @@ jobs:
           environment_name: "Coffee-shop-env"
           version_label: "v-${{ github.sha }}"
           region: "eu-north-1"
-          deployment_package: "target/coffee-shop-0.0.1-SNAPSHOT.jar"
+          deployment_package: "target/coffeeshop-0.0.1-SNAPSHOT.jar"
