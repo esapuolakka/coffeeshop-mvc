@@ -2,13 +2,7 @@ package com.websites.coffeeshop.model;
 
 import java.util.List;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "osasto")
 public class Category {
@@ -26,6 +20,48 @@ public class Category {
 
   @OneToMany(mappedBy = "category")
   private List<Item> categoryItems;
+
+  public Category() {
+  }
+
+  public Category(Long id, String name, Long categoryId, List<Item> categoryItems) {
+    this.id = id;
+    this.name = name;
+    this.categoryId = categoryId;
+    this.categoryItems = categoryItems;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Long getCategoryId() {
+    return categoryId;
+  }
+
+  public void setCategoryId(Long categoryId) {
+    this.categoryId = categoryId;
+  }
+
+  public List<Item> getCategoryItems() {
+    return categoryItems;
+  }
+
+  public void setCategoryItems(List<Item> categoryItems) {
+    this.categoryItems = categoryItems;
+  }
 
   @Override
   public String toString() {

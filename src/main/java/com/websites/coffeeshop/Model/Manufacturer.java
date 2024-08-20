@@ -2,13 +2,7 @@ package com.websites.coffeeshop.model;
 
 import java.util.List;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name="valmistaja")
 public class Manufacturer {
@@ -26,4 +20,46 @@ public class Manufacturer {
 
   @OneToMany(mappedBy="manufacturer")
   private List<Item> manufacturerItems;
+
+  public Manufacturer() {
+  }
+
+  public Manufacturer(Long id, String name, String url, List<Item> manufacturerItems) {
+    this.id = id;
+    this.name = name;
+    this.url = url;
+    this.manufacturerItems = manufacturerItems;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
+  }
+
+  public List<Item> getManufacturerItems() {
+    return manufacturerItems;
+  }
+
+  public void setManufacturerItems(List<Item> manufacturerItems) {
+    this.manufacturerItems = manufacturerItems;
+  }
 }
