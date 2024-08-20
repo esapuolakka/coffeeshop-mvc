@@ -10,20 +10,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="osasto")
+@Table(name = "osasto")
 public class Category {
-  
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="id")
+  @Column(name = "id")
   private Long id;
 
-  @Column(name="nimi")
+  @Column(name = "nimi")
   private String name;
 
-  @Column(name="osastoid")
+  @Column(name = "osastoid")
   private Long categoryId;
 
-  @OneToMany(mappedBy="category")
+  @OneToMany(mappedBy = "category")
   private List<Item> categoryItems;
+
+  @Override
+  public String toString() {
+    return "Category{id=" + id + ", name='" + name + "'}";
+  }
 }

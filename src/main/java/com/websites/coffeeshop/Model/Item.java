@@ -12,39 +12,44 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="tuote")
+@Table(name = "tuote")
 public class Item {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="id")
+  @Column(name = "id")
   private Long id;
 
-  @Column(name="nimi")
+  @Column(name = "nimi")
   private String name;
 
-  @Column(name="kuvaus")
+  @Column(name = "kuvaus")
   private String description;
 
-  @Column(name="hinta")
+  @Column(name = "hinta")
   private BigDecimal price;
 
   @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name="tuotekuva")
+  @JoinColumn(name = "tuotekuva")
   private Image image;
 
-  @Column(name="lisatty")
+  @Column(name = "lisatty")
   private LocalDateTime createdAt;
 
   @ManyToOne
-  @JoinColumn(name="osastoid", nullable=false)
+  @JoinColumn(name = "osastoid", nullable = false)
   private Category category;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="toimittajaid", nullable=false)
+  @JoinColumn(name = "toimittajaid", nullable = false)
   private Supplier supplier;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name="valmistajaid", nullable=false)
+  @JoinColumn(name = "valmistajaid", nullable = false)
   private Manufacturer manufacturer;
+
+  @Override
+  public String toString() {
+    return "Item{id=" + id + ", name='" + name + "'}";
+  }
 }

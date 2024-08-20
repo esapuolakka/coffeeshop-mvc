@@ -14,16 +14,53 @@
         max-width: 450px;
         object-fit: cover;
       }
+      .cart-image:hover {
+        transform: scale(1.05);
+        transition: transform 100ms ease-in;
+      }
+      .cart-image:active {
+        transform: scale(0.9);
+        transition: transform 10ms ease-in;
+      }
     </style>
   </head>
   <body>
     <header th:replace="~{fragments/layout :: header}"></header>
     <main class="container" style="padding: 3rem 0">
-      <h1 th:if="${itemsWithImageUrls.size() > 0}" th:text="${itemsWithImageUrls.get(0).item.category.name}">
-        Tuotekategoria
-      </h1>
-      <h1 th:if="${itemsWithImageUrls.size() == 0}">Ei yhtään tuotetta</h1>
-      <div class="row row-cols-1 row-cols-md-3 g-4" style="margin-top: 3rem" th:if="${itemsWithImageUrls.size() > 0}">
+      <div class="row align-items-center">
+        <div class="col-md-6 col-12 text-md-left align-middle">
+          <div th:if="${itemsWithImageUrls.size() > 0}">
+            <h1 th:text="${itemsWithImageUrls.get(0).item.category.name}">
+              Tuotekategoria
+            </h1>
+          </div>
+          <div th:if="${itemsWithImageUrls.size() == 0}">
+            <h1>Ei yhtään tuotetta</h1>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+          <form
+            th:action="@{/tuotteet/{tuotekategoria}(tuotekategoria=${itemsWithImageUrls.size() > 0 ? itemsWithImageUrls.get(0).item.category.name : ''})}"
+            method="get"
+            class="input-group"
+          >
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              placeholder="Hae tuotteita..."
+              aria-label="Hae tuotteita"
+            />
+            <button class="btn btn-primary" type="submit">Hae</button>
+          </form>
+        </div>
+      </div>
+
+      <div
+        class="row row-cols-1 row-cols-md-3 g-4"
+        style="margin-top: 3rem"
+        th:if="${itemsWithImageUrls.size() > 0}"
+      >
         <div class="col" th:each="itemWithImageUrl : ${itemsWithImageUrls}">
           <div class="card h-100">
             <a
@@ -40,11 +77,67 @@
               <h5 class="card-title" th:text="${itemWithImageUrl.item.name}">
                 Tuotteen nimi
               </h5>
-              <p class="card-text">
+              <p
+                class="card-text"
+                th:if="${!#authorization.expression('hasRole(''VIP'')')}"
+              >
                 <strong th:text="${itemWithImageUrl.item.price} + ' €'"
                   >Hinta</strong
                 >
               </p>
+              <p
+                class="card-text"
+                th:if="${#authorization.expression('hasRole(''VIP'')')}"
+              >
+                <strong
+                  style="text-decoration: line-through"
+                  th:text="${itemWithImageUrl.item.price} + ' €'"
+                  >Hinta</strong
+                >
+                <span
+                  th:text="${itemWithImageUrl.discountedPrice} + ' €'"
+                  style="color: red; font-weight: bold"
+                  >Alehinta</span
+                >
+              </p>
+
+              <div
+                style="
+                  position: absolute;
+                  bottom: 0;
+                  right: 0;
+                  width: 15%;
+                  background-color: rgb(255, 94, 94);
+                  aspect-ratio: 1;
+                  border-radius: 50%;
+                "
+              >
+                <form th:action="@{/ostoskori/lisaa}" method="post">
+                  <input
+                    type="hidden"
+                    name="productId"
+                    th:value="${itemWithImageUrl.item.id}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      border: none;
+                      background: none;
+                      padding: 0;
+                      cursor: pointer;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                  >
+                    <img
+                      class="cart-image"
+                      th:src="@{/images/add-to-cart.png}"
+                      style="width: 80%; text-align: center; scale: 1"
+                    />
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>

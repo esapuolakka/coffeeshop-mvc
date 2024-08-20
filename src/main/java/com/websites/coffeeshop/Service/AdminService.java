@@ -11,11 +11,13 @@ import java.util.Optional;
 import java.io.IOException;
 
 import com.websites.coffeeshop.repository.CategoryRepository;
+import com.websites.coffeeshop.repository.DiscountRepository;
 import com.websites.coffeeshop.repository.ImageRepository;
 import com.websites.coffeeshop.repository.ItemRepository;
 import com.websites.coffeeshop.repository.ManufacturerRepository;
 import com.websites.coffeeshop.repository.SupplierRepository;
 import com.websites.coffeeshop.model.Category;
+import com.websites.coffeeshop.model.Discount;
 import com.websites.coffeeshop.model.Image;
 import com.websites.coffeeshop.model.Item;
 import com.websites.coffeeshop.model.ItemDTO;
@@ -35,6 +37,8 @@ public class AdminService {
   private ImageRepository imageRepository;
   @Autowired
   private CategoryRepository categoryRepository;
+  @Autowired
+  private DiscountRepository discountRepository;
 
   public List<Item> getAllItems() {
     return itemRepository.findAll();
@@ -325,6 +329,18 @@ public class AdminService {
     } else {
       throw new RuntimeException("Supplier not found with id: " + id);
     }
+  }
+
+  public Discount getDiscount() {
+    return discountRepository.findAll().stream()
+        .findFirst()
+        .orElseThrow(() -> new RuntimeException("Discount not found"));
+  }
+
+  public Discount updateDiscount(double discount) {
+    Discount existingDiscount = getDiscount();
+    existingDiscount.setDiscount(discount);
+    return discountRepository.save(existingDiscount);
   }
 
 }

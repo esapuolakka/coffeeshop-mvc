@@ -8,12 +8,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import java.util.List;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
+import com.websites.coffeeshop.model.Cart;
+import com.websites.coffeeshop.model.CartItem;
 import com.websites.coffeeshop.model.Image;
+import com.websites.coffeeshop.model.Item;
 import com.websites.coffeeshop.model.ItemWithImageUrl;
 import com.websites.coffeeshop.service.CoffeeShopService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CoffeeShopController {
@@ -37,16 +46,38 @@ public class CoffeeShopController {
   }
 
   @GetMapping("/tuotteet/{tuotekategoria}")
-  public String itemsPage(@PathVariable String tuotekategoria, Model model) {
-    Long categoryId = tuotekategoria.equals("kahvilaitteet") ? 1L : 2L;
-    List<ItemWithImageUrl> itemsWithImageUrls = coffeeShopService.getAllItemsWithImageUrls(categoryId);
+  public String itemsPage(@PathVariable("tuotekategoria") String categoryName,
+      @RequestParam(value = "name", required = false) String name, Model model) {
+    Long categoryId = categoryName.equals("kahvilaitteet") ? 1L : 2L;
+    List<ItemWithImageUrl> itemsWithImageUrls;
+
+    if (name == null) {
+      itemsWithImageUrls = coffeeShopService.getAllItemsWithImageUrls(categoryId);
+    } else {
+      itemsWithImageUrls = coffeeShopService.searchItemsWithImageUrls(categoryId, name);
+    }
+
+    if (itemsWithImageUrls == null) {
+      itemsWithImageUrls = new ArrayList<>();
+    }
+
     model.addAttribute("itemsWithImageUrls", itemsWithImageUrls);
     return "itemsList";
   }
 
   @GetMapping("/tuotteet/{tuotekategoria}/{id}")
   public String itemDetailPage(@PathVariable String tuotekategoria, @PathVariable Long id, Model model) {
+
+    Item item = coffeeShopService.getItemById(id);
+    BigDecimal price = item.getPrice();
+    BigDecimal discountedPrice = BigDecimal.ZERO;
+
+    if (price != null) {
+      discountedPrice = BigDecimal.valueOf(coffeeShopService.getDiscountedPrice(price));
+    }
+
     model.addAttribute("item", coffeeShopService.getItemById(id));
+    model.addAttribute("discountedPrice", discountedPrice);
     return "itemDetails";
   }
 
@@ -57,6 +88,81 @@ public class CoffeeShopController {
     headers.setContentType(MediaType.parseMediaType(image.getMediaType()));
     headers.setContentLength(image.getSize());
     return new ResponseEntity<>(image.getContent(), headers, HttpStatus.OK);
+  }
+
+  @GetMapping("/ostoskori")
+  public String shoppingCart(Model model, HttpSession session) {
+    Cart cart = (Cart) session.getAttribute("cart");
+    if (cart == null) {
+      cart = new Cart();
+      session.setAttribute("cart", cart);
+    }
+
+    List<CartItem> cartItems = cart.getItems();
+    cartItems.forEach(cartItem -> {
+      BigDecimal originalPrice = cartItem.getPrice();
+      double discountedPrice = coffeeShopService.getDiscountedPrice(originalPrice);
+      cartItem.setDiscountedPrice(discountedPrice);
+    });
+
+    BigDecimal totalPrice = cartItems.stream()
+        .map(cartItem -> cartItem.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    BigDecimal totalPriceVIP = cartItems.stream()
+        .map(cartItem -> BigDecimal.valueOf(cartItem.getDiscountedPrice())
+            .multiply(BigDecimal.valueOf(cartItem.getQuantity())))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    session.setAttribute("totalPrice", totalPrice);
+    session.setAttribute("totalPriceVIP", totalPriceVIP);
+
+    model.addAttribute("cart", cart);
+    model.addAttribute("cartItems", cartItems);
+    model.addAttribute("totalPrice", session.getAttribute("totalPrice"));
+    model.addAttribute("totalPriceVIP", session.getAttribute("totalPriceVIP"));
+    return "shoppingCart";
+  }
+
+  @PostMapping("/ostoskori/lisaa")
+  public String addToCart(@RequestParam("productId") Long productId, HttpSession session) {
+    Cart cart = (Cart) session.getAttribute("cart");
+    if (cart == null) {
+      cart = new Cart();
+      session.setAttribute("cart", cart);
+    }
+    String itemName = coffeeShopService.getItemById(productId).getName();
+    BigDecimal itemPrice = coffeeShopService.getItemById(productId).getPrice();
+    double discountedPrice = coffeeShopService.getDiscountedPrice(itemPrice);
+
+    cart.addItem(productId, itemName, itemPrice, discountedPrice, 1);
+
+    double discount = coffeeShopService.getDiscount().getDiscount();
+
+    BigDecimal totalPrice = cart.getTotalPrice(BigDecimal.ZERO, false);
+    BigDecimal totalPriceVIP = cart.getTotalPrice(BigDecimal.valueOf(discount), true);
+
+    session.setAttribute("totalPrice", totalPrice);
+    session.setAttribute("totalPriceVIP", totalPriceVIP);
+
+    return "redirect:/tuotteet";
+  }
+
+  @GetMapping("/ostoskori/poista")
+  public String removeFromCart(@RequestParam("productId") Long productId, HttpSession session) {
+    Cart cart = (Cart) session.getAttribute("cart");
+    if (cart != null) {
+      cart.removeItem(productId);
+
+      double discount = coffeeShopService.getDiscount().getDiscount();
+
+      BigDecimal totalPrice = cart.getTotalPrice(BigDecimal.ZERO, false);
+      BigDecimal totalPriceVIP = cart.getTotalPrice(BigDecimal.valueOf(discount), true);
+
+      session.setAttribute("totalPrice", totalPrice);
+      session.setAttribute("totalPriceVIP", totalPriceVIP);
+    }
+    return "redirect:/ostoskori";
   }
 
 }

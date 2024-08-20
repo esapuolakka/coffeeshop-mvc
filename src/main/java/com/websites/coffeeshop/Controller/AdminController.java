@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -214,5 +213,18 @@ public class AdminController {
       redirectAttributes.addFlashAttribute("errorMessage", "Käyttäjän poistaminen epäonnistui.");
     }
     return "redirect:/admin/kayttajat";
+  }
+
+  @GetMapping("/asetukset")
+  public String showSettingsPage(Model model) {
+    double discount = adminService.getDiscount().getDiscount();
+    model.addAttribute("discount", discount);
+    return "adminSettings";
+  }
+
+  @PostMapping("/asetukset")
+  public String saveDiscount(@RequestParam double discount) {
+    adminService.updateDiscount(discount);
+    return "redirect:/admin/asetukset";
   }
 }

@@ -61,6 +61,11 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  public User findByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+  }
+
   public void updateUserRole(Long userId, String roleName) {
     User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Käyttäjää ei löydy"));
     Role role = roleRepository.findByName(roleName).orElseThrow(() -> new IllegalArgumentException("Roolia ei löydy"));

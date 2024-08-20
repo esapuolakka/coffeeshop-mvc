@@ -19,13 +19,17 @@ import org.springframework.ui.Model;
 @Controller
 public class AuthController {
 
-  // private static final Logger logger = Logger.getLogger(AuthController.class.getName());
+  // private static final Logger logger =
+  // Logger.getLogger(AuthController.class.getName());
 
   @Autowired
   private UserService userService;
 
   @GetMapping("/login")
-  public String login() {
+  public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+    if (error != null) {
+      model.addAttribute("errorMessage", "Virheellinen käyttäjänimi tai salasana.");
+    }
     return "login";
   }
 
@@ -57,14 +61,17 @@ public class AuthController {
       model.addAttribute("errorMessage", "Kirjaudu sisään nähdäksesi tämän sivun.");
       return "redirect:/etusivu";
     }
+    String username = authentication.getName();
+    User user = userService.findByUsername(username);
     model.addAttribute("username", authentication.getName());
+    model.addAttribute("user", user);
     return "user";
   }
 
   @DeleteMapping("/user")
   public String deleteUserAccount(HttpSession session, Authentication authentication) {
     if (authentication == null || !authentication.isAuthenticated()) {
-        return "redirect:/login";
+      return "redirect:/login";
     }
 
     String username = authentication.getName();
@@ -75,8 +82,6 @@ public class AuthController {
 
     return "redirect:/etusivu";
   }
-
-  
 
   @GetMapping("/logout")
   public String logout(HttpSession session) {
