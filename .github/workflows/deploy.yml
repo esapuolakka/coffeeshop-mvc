@@ -9,26 +9,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
   
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    
-    - name: Set up JDK 17
-      uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-    
-    - name: Build with Maven
-      run: mvn package
-
-    - name: Deploy to Elastic Beanstalk
-      uses: einaregilsson/beanstalk-deploy@v19
-      with:
-        aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: "coffee-shop"
-        environment_name: "Coffee-shop-env"
-        version_label: "v-${{ github.sha }}"
-        region: "eu-north-1"
-        deployment_package: "target/coffee-shop-0.0.1-SNAPSHOT.jar"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Build with Maven
+        run: mvn package
+  
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v19
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "coffee-shop"
+          environment_name: "Coffee-shop-env"
+          version_label: "v-${{ github.sha }}"
+          region: "eu-north-1"
+          deployment_package: "target/coffee-shop-0.0.1-SNAPSHOT.jar"
