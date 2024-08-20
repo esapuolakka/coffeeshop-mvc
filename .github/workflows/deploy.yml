@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
     
       - name: Build with Maven
-        run: mvn package
+        run: mvn clean package
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v19
