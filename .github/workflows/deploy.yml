@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
     
       - name: Set up JDK 17
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -23,12 +23,12 @@ jobs:
         run: mvn clean package
 
       - name: Deploy to Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v19
+        uses: einaregilsson/beanstalk-deploy@v20
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: "coffeeshop-app"
-          environment_name: "Coffeeshop-app-env"
+          application_name: "coffeeshop2"
+          environment_name: "Coffeeshop2-env"
           version_label: "v-${{ github.sha }}"
           region: "eu-north-1"
           deployment_package: "target/coffeeshop-0.0.1-SNAPSHOT.jar"
