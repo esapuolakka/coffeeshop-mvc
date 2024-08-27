@@ -1,14 +1,15 @@
-// package com.websites.coffeeshop.util;
+package com.websites.coffeeshop.util;
 
-// import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-// public class PasswordGenerator {
-//     public static void main(String[] args) {
-//         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//         String rawPassword = "";
-//         String encodedPassword = passwordEncoder.encode(rawPassword);
+// Passwordganerator manuaalista kryptatun salasanan luomista varten
+public class PasswordGenerator {
+    public static void main(String[] args) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String rawPassword = "";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
         
-//         // System.out.println("Salattu salasana: " + encodedPassword);
-//     }
-// }
+        // System.out.println("Salattu salasana: " + encodedPassword);
+    }
+}
 
