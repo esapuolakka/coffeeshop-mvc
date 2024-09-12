@@ -10,7 +10,6 @@
     />
     <style>
       .main {
-        position: absolute;
         background-image: linear-gradient(
             rgba(0, 0, 0, 0.5),
             rgba(33, 34, 58, 0.5)
@@ -22,14 +21,13 @@
         top: 5;
         left: 0;
         width: 100%;
-        height: 100%;
         overflow-x: hidden;
       }
     </style>
   </head>
   <body>
-    <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="main">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="main" style="min-height: calc(100vh - 9rem);">
       <div
         style="height: 50%; background-color: #978787; padding: 1.5rem 0 0 0"
       >
@@ -147,6 +145,7 @@
         </div>
       </div>
     </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
     <script>
       function handleDeleteSubmit(form) {
         event.preventDefault();

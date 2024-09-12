@@ -9,8 +9,8 @@
     />
   </head>
   <body>
-    <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container" style="padding: 3rem 0">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="container" style="min-height: calc(100vh - 9rem); padding: 3rem 0;">
       <h1>Ostoskori</h1>
       <table class="table">
         <thead>
@@ -69,5 +69,6 @@
         </tfoot>
       </table>
     </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
   </body>
 </html>

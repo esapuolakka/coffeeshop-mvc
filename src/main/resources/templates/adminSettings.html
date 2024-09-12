@@ -10,21 +10,38 @@
     <title>Admin - Asetukset</title>
   </head>
   <body>
-    <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container mt-5">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="container mt-5" style="min-height: calc(100vh - 12rem);">
       <a th:href="@{/admin}">Takaisin</a>
       <h1 style="margin-top: 1rem">Aseta VIP-alennus</h1>
-  
-      <form th:action="@{/admin/asetukset}" method="post" style="max-width: 400px;">
-          <div class="mb-3">
-              <label for="discount" class="form-label">Alennusprosentti (%)</label>
-              <input type="number" id="discount" name="discount" class="form-control" step="0.01" min="0.0" max="100.0" th:value="${discount}" />
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Tallenna alennus</button>
-      </form>
-      <h4 style="margin-top: 3rem;" >Nykyinen alennusprosentti: <span th:text="${discount}"></span>%</h4>
-  </main>
 
+      <form
+        th:action="@{/admin/asetukset}"
+        method="post"
+        style="max-width: 400px"
+      >
+        <div class="mb-3">
+          <label for="discount" class="form-label">Alennusprosentti (%)</label>
+          <input
+            type="number"
+            id="discount"
+            name="discount"
+            class="form-control"
+            step="0.01"
+            min="0.0"
+            max="100.0"
+            th:value="${discount}"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem">
+          Tallenna alennus
+        </button>
+      </form>
+      <h4 style="margin-top: 3rem">
+        Nykyinen alennusprosentti: <span th:text="${discount}"></span>%
+      </h4>
+    </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

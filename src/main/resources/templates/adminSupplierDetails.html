@@ -12,8 +12,8 @@
     </title>
   </head>
   <body>
-    <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container mt-5">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="container mt-5" style="min-height: calc(100vh - 12rem);">
       <div class="mt-3">
         <div
           th:if="${successMessage}"
@@ -217,7 +217,7 @@
         </div>
       </div>
     </main>
-
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
     <script>
       function handleEditSubmit(event, form) {
         event.preventDefault();

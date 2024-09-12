@@ -10,8 +10,8 @@
     <title>Admin - Tuotteet</title>
   </head>
   <body>
-    <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container mt-5">
+    <header th:replace="~{fragments/header :: header}"></header>
+    <main class="container mt-5" style="min-height: calc(100vh - 12rem);">
       <a th:href="@{/admin}">Takaisin</a>
       <h1 style="margin-top: 1rem">Kaikki tuotteet</h1>
       <div
@@ -215,6 +215,7 @@
         </div>
       </div>
     </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const addModal = document.getElementById("addModal");
