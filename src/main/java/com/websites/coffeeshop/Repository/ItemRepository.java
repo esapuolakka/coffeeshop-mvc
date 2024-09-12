@@ -2,7 +2,8 @@ package com.websites.coffeeshop.repository;
 
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ import com.websites.coffeeshop.model.Item;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
   @EntityGraph(attributePaths = { "manufacturer", "supplier" })
-  List<Item> findByCategoryId(Long categoryId);
+  Page<Item> findByCategoryId(Long categoryId, Pageable pageable);
 
   @Query(value = "SELECT i FROM Item i WHERE i.id > :id ORDER BY i.id ASC LIMIT 1")
   Optional<Item> findNextItem(@Param("id") Long id);
@@ -26,5 +27,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
   List<Item> findBySupplierId(Long supplierId);
 
   @Query("SELECT i FROM Item i WHERE i.category.id = :category AND LOWER(i.name) LIKE LOWER(CONCAT('%', :name, '%'))")
-  List<Item> findByCategoryIdAndName(@Param("category") Long categoryId, @Param("name") String name);
+  Page<Item> findByCategoryIdAndName(@Param("category") Long categoryId, @Param("name") String name, Pageable pageable);
 }

@@ -38,13 +38,12 @@ public class SecurityConfig {
                 .requestMatchers("/register/**").permitAll()
                 .requestMatchers("/etusivu").permitAll()
                 .requestMatchers("/tuotteet/**").permitAll()
-                .requestMatchers("/tuotteet/*/haku").permitAll()
                 .requestMatchers("/ostoskori/**").permitAll()
                 .requestMatchers("/images/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated())
             .rememberMe(rememberMe -> rememberMe
-                .tokenValiditySeconds(86400)  // Muista käyttäjä 1 päivän ajan
+                .tokenValiditySeconds(86400)  // Muistaa käyttäjän 1 päivän ajan
                 .key("mySecretKey"))
             .formLogin(form -> form
                 .loginPage("/login")

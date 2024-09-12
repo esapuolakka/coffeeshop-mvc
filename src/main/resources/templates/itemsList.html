@@ -31,16 +31,15 @@
         transform: scale(0.9);
         transition: transform 10ms ease-in;
       }
-      
     </style>
   </head>
   <body>
     <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container" style="padding: 3rem 0">
+    <main class="container" style="padding: 3rem 0.5rem">
       <div class="row align-items-center">
         <div class="col-md-6 col-12 text-md-left align-middle">
           <div th:if="${itemsWithImageUrls.size() > 0}">
-            <h1 th:text="${itemsWithImageUrls.get(0).item.category.name}">
+            <h1 th:text="${itemsWithImageUrls[0].item.category.name}">
               Tuotekategoria
             </h1>
           </div>
@@ -50,7 +49,7 @@
         </div>
         <div class="col-md-6 col-12">
           <form
-            th:action="@{/tuotteet/{tuotekategoria}(tuotekategoria=${itemsWithImageUrls.size() > 0 ? itemsWithImageUrls.get(0).item.category.name : ''})}"
+            th:action="@{/tuotteet/{tuotekategoria}(tuotekategoria=${itemsWithImageUrls.size() > 0 ? itemsWithImageUrls[0].item.category.name : ''})}"
             method="get"
             class="input-group"
           >
@@ -151,6 +150,48 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="container mt-5 p-0">
+        <ul class="pagination">
+          <li
+            class="page-item"
+            th:classappend="${page.isFirst()} ? 'disabled' : ''"
+          >
+            <a
+              class="page-link"
+              th:href="@{/tuotteet/{tuotekategoria}(tuotekategoria=${itemsWithImageUrls.size() > 0 ? itemsWithImageUrls[0].item.category.name : ''}, page=${page.number - 1})}"
+              aria-label="Edellinen"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <li
+            class="page-item"
+            th:each="item : ${pageNumbers}"
+            th:classappend="${item == page.number} ? 'active' : ''"
+          >
+            <a
+              class="page-link"
+              th:href="@{/tuotteet/{tuotekategoria}(tuotekategoria=${itemsWithImageUrls.size() > 0 ? itemsWithImageUrls[0].item.category.name : ''}, page=${item})}"
+              th:text="${item + 1}"
+              >1</a
+            >
+          </li>
+
+          <li
+            class="page-item"
+            th:classappend="${page.isLast()} ? 'disabled' : ''"
+          >
+            <a
+              class="page-link"
+              th:href="@{/tuotteet/{tuotekategoria}(tuotekategoria=${itemsWithImageUrls.size() > 0 ? itemsWithImageUrls[0].item.category.name : ''}, page=${page.number + 1})}"
+              aria-label="Seuraava"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

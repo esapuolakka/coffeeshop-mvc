@@ -8,10 +8,17 @@
       rel="stylesheet"
     />
     <title>Tuotteet - <span th:text="${item.name}">Tuote</span></title>
+    <style>
+      @media screen and (max-width: 786px) {
+        .back-button {
+          padding: 0 0.5rem;
+        }
+      }
+    </style>
   </head>
   <body>
     <header th:replace="~{fragments/layout :: header}"></header>
-    <main class="container mt-5">
+    <main class="container mt-5" style="padding: 3rem 0.5rem">
       <div
         style="
           display: flex;
@@ -35,7 +42,10 @@
         </div>
       </div>
       <h1 th:text="${item.name}">Tuote</h1>
-      <div class="row row-cols-1 row-cols-md-2 g-4" style="margin-top: 3rem">
+      <div
+        class="row row-cols-1 row-cols-md-2 g-4"
+        style="margin-top: 3rem; padding: 0 0.5rem"
+      >
         <div class="card h-100" style="max-width: 400px">
           <img
             th:if="${item.image != null}"
@@ -57,8 +67,16 @@
                 <strong th:text="${item.price} + ' €'">Hinta</strong>
               </span>
               <span th:if="${#authorization.expression('hasRole(''VIP'')')}">
-                <strong style="text-decoration: line-through;" th:text="${item.price} + ' €'">Hinta</strong>
-                <span th:text="${discountedPrice} + ' €'" style="color: red; font-weight: bold;">Alehinta</span>
+                <strong
+                  style="text-decoration: line-through"
+                  th:text="${item.price} + ' €'"
+                  >Hinta</strong
+                >
+                <span
+                  th:text="${discountedPrice} + ' €'"
+                  style="color: red; font-weight: bold"
+                  >Alehinta</span
+                >
               </span>
             </h3>
             <p class="card-text" th:text="${item.description}">Kuvaus</p>
@@ -69,22 +87,18 @@
             </p>
             <div style="display: flex; align-items: end; height: 100%">
               <form th:action="@{/ostoskori/lisaa}" method="post">
-                <input
-                  type="hidden"
-                  name="productId"
-                  th:value="${item.id}"
-                />
-                <button
-                  type="submit"
-                  class="btn btn-warning mt-4"
-                >Lisää ostoskoriin
-              </button>
+                <input type="hidden" name="productId" th:value="${item.id}" />
+                <button type="submit" class="btn btn-warning mt-4">
+                  Lisää ostoskoriin
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
 
       <div
+        class="back-button"
         style="margin-top: 1rem; display: flex; justify-content: space-between"
       >
         <a href="/tuotteet/kahvilaitteet" class="btn btn-primary mt-3"

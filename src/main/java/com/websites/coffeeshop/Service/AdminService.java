@@ -3,6 +3,8 @@ package com.websites.coffeeshop.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -44,12 +46,8 @@ public class AdminService {
     return itemRepository.findAll();
   }
 
-  public List<Item> getAllByCategory(Long categoryId) {
-    List<Item> items = itemRepository.findByCategoryId(categoryId);
-    if (items == null) {
-      return new ArrayList<>();
-    }
-    return items;
+  public Page<Item> getAllByCategory(Long categoryId, Pageable pageable) {
+    return itemRepository.findByCategoryId(categoryId, pageable);
   }
 
   public Item getItemById(Long id) {

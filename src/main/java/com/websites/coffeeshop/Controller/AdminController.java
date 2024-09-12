@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.websites.coffeeshop.model.Category;
 import com.websites.coffeeshop.model.Image;
@@ -49,8 +51,8 @@ public class AdminController {
   }
 
   @GetMapping("/tuotteet")
-  public String allItemsList(@RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, Model model) {
-    List<Item> items = adminService.getAllByCategory(categoryId);
+  public String allItemsList(@RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, Model model, Pageable pageable) {
+    Page<Item> items = adminService.getAllByCategory(categoryId, pageable);
     List<Manufacturer> manufacturers = adminService.getAllManufacturers();
     List<Supplier> suppliers = adminService.getAllSuppliers();
     List<Category> categories = adminService.getAllCategories();

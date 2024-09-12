@@ -1,6 +1,7 @@
 package com.websites.coffeeshop.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
@@ -13,6 +14,9 @@ import com.websites.coffeeshop.model.Discount;
 import com.websites.coffeeshop.model.Image;
 import com.websites.coffeeshop.model.Item;
 import com.websites.coffeeshop.model.ItemWithImageUrl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 @Service
 public class CoffeeShopService {
@@ -35,8 +39,8 @@ public class CoffeeShopService {
     return itemRepository.findAll();
   }
 
-  public List<Item> getAllByCategory(Long categoryId) {
-    return itemRepository.findByCategoryId(categoryId);
+  public Page<Item> getAllByCategory(Long categoryId, Pageable pageable) {
+    return itemRepository.findByCategoryId(categoryId, pageable);
   }
 
   public Image getImageById(Long id) {
@@ -44,10 +48,11 @@ public class CoffeeShopService {
         .orElseThrow(() -> new RuntimeException("Image not found"));
   }
 
-  public List<ItemWithImageUrl> getAllItemsWithImageUrls(Long categoryId) {
+  public Page<ItemWithImageUrl> getAllItemsWithImageUrls(Long categoryId, Pageable pageable) {
     String categoryPath = categoryId == 1 ? "/tuotteet/kahvilaitteet/" : "/tuotteet/kulutustuotteet/";
-    List<Item> items = getAllByCategory(categoryId);
-    return items.stream()
+    Page<Item> items = getAllByCategory(categoryId, pageable);
+
+    List<ItemWithImageUrl> itemsWithImageUrls = items.getContent().stream()
         .map(item -> {
           String imageUrl = (item.getImage() != null) ? categoryPath + item.getImage().getId() + "/kuva"
               : "/images/No_Image_Available.png";
@@ -55,13 +60,14 @@ public class CoffeeShopService {
           return new ItemWithImageUrl(item, imageUrl, discountedPrice);
         })
         .toList();
+    return new PageImpl<>(itemsWithImageUrls, pageable, items.getTotalElements());
   }
 
-  public List<ItemWithImageUrl> searchItemsWithImageUrls(Long categoryId, String name) {
+  public Page<ItemWithImageUrl> searchItemsWithImageUrls(Long categoryId, String name, Pageable pageable) {
     String categoryPath = categoryId == 1 ? "/tuotteet/kahvilaitteet/" : "/tuotteet/kulutustuotteet/";
-    List<Item> items = itemRepository.findByCategoryIdAndName(categoryId, name);
+    Page<Item> items = itemRepository.findByCategoryIdAndName(categoryId, name, pageable);
 
-    return items.stream()
+    List<ItemWithImageUrl> itemsWithImageUrls = items.getContent().stream()
         .map(item -> {
           String imageUrl = (item.getImage() != null) ? categoryPath + item.getImage().getId() + "/kuva"
               : "/images/No_Image_Available.png";
@@ -69,6 +75,7 @@ public class CoffeeShopService {
           return new ItemWithImageUrl(item, imageUrl, discountedPrice);
         })
         .toList();
+    return new PageImpl<>(itemsWithImageUrls, pageable, items.getTotalElements());
   }
 
   public Discount getDiscount() {
@@ -76,10 +83,11 @@ public class CoffeeShopService {
         .orElseThrow(() -> new RuntimeException("Discount not found"));
   }
 
-   // Laskee alennetun hinnan
+  // Laskee alennetun hinnan
   public double getDiscountedPrice(BigDecimal itemPrice) {
     double discount = getDiscount().getDiscount();
-    BigDecimal discountedPrice = itemPrice.subtract(itemPrice.multiply(BigDecimal.valueOf(discount)).divide(BigDecimal.valueOf(100)));
+    BigDecimal discountedPrice = itemPrice
+        .subtract(itemPrice.multiply(BigDecimal.valueOf(discount)).divide(BigDecimal.valueOf(100)));
     discountedPrice = discountedPrice.setScale(2, RoundingMode.HALF_UP);
     return discountedPrice.doubleValue();
   }

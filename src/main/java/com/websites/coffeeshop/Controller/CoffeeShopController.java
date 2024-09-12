@@ -1,6 +1,8 @@
 package com.websites.coffeeshop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
+import java.util.stream.IntStream;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 
 import com.websites.coffeeshop.model.Cart;
 import com.websites.coffeeshop.model.CartItem;
@@ -26,6 +30,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class CoffeeShopController {
+
+  private static final Logger logger = Logger.getLogger(CoffeeShopController.class.getName());
 
   @Autowired
   private CoffeeShopService coffeeShopService;
@@ -47,23 +53,54 @@ public class CoffeeShopController {
 
   @GetMapping("/tuotteet/{tuotekategoria}")
   public String itemsPage(@PathVariable("tuotekategoria") String categoryName,
-      @RequestParam(value = "name", required = false) String name, Model model) {
+      @RequestParam(value = "name", required = false) String name,
+      @RequestParam(defaultValue = "0") Optional<Integer> page,
+      Model model) {
     Long categoryId = categoryName.equals("kahvilaitteet") ? 1L : 2L;
-    List<ItemWithImageUrl> itemsWithImageUrls;
 
-    if (name == null) {
-      itemsWithImageUrls = coffeeShopService.getAllItemsWithImageUrls(categoryId);
+    Page<ItemWithImageUrl> pageItems;
+
+    int currentPage = page.orElse(0);
+    int pageSize = 18;
+
+    if (name != null) {
+      pageItems = coffeeShopService.searchItemsWithImageUrls(categoryId, name,
+          PageRequest.of(currentPage, pageSize));
     } else {
-      itemsWithImageUrls = coffeeShopService.searchItemsWithImageUrls(categoryId, name);
+      pageItems = coffeeShopService.getAllItemsWithImageUrls(categoryId,
+          PageRequest.of(currentPage, pageSize));
     }
 
-    if (itemsWithImageUrls == null) {
-      itemsWithImageUrls = new ArrayList<>();
-    }
+    int totalPages = pageItems.getTotalPages();
 
-    model.addAttribute("itemsWithImageUrls", itemsWithImageUrls);
+    if (totalPages > 0) {
+      List<Integer> pageNumbers = IntStream.range(0, totalPages).boxed()
+          .toList();
+      model.addAttribute("pageNumbers", pageNumbers);
+    }
+    model.addAttribute("page", pageItems);
+    model.addAttribute("itemsWithImageUrls", pageItems.getContent());
     return "itemsList";
   }
+
+  // @GetMapping("/tuotteet/page/{tuotekategoria}")
+  // public ResponseEntity<List<ItemWithImageUrl>>
+  // showMoreItems(@PathVariable("tuotekategoria") String categoryName,
+  // @RequestParam(value = "name", required = false) String name,
+  // @RequestParam(defaultValue = "0") int page,
+  // @RequestParam(defaultValue = "18") int size) {
+  // Long categoryId = categoryName.equals("kahvilaitteet") ? 1L : 2L;
+  // List<ItemWithImageUrl> itemsWithImageUrls;
+
+  // if (name != null) {
+  // itemsWithImageUrls = coffeeShopService.searchItemsWithImageUrls(categoryId,
+  // name, PageRequest.of(page, size));
+  // } else {
+  // itemsWithImageUrls = coffeeShopService.getAllItemsWithImageUrls(categoryId,
+  // PageRequest.of(page, size));
+  // }
+  // return ResponseEntity.ok(itemsWithImageUrls);
+  // }
 
   @GetMapping("/tuotteet/{tuotekategoria}/{id}")
   public String itemDetailPage(@PathVariable String tuotekategoria, @PathVariable Long id, Model model) {
