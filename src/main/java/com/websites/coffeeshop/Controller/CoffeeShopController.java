@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+// import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import java.math.BigDecimal;
 
@@ -31,7 +31,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class CoffeeShopController {
 
-  private static final Logger logger = Logger.getLogger(CoffeeShopController.class.getName());
+  // private static final Logger logger = Logger.getLogger(CoffeeShopController.class.getName());
 
   @Autowired
   private CoffeeShopService coffeeShopService;
