@@ -51,7 +51,8 @@ public class AdminController {
   }
 
   @GetMapping("/tuotteet")
-  public String allItemsList(@RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, Model model, Pageable pageable) {
+  public String allItemsList(@RequestParam(value = "categoryId", defaultValue = "1") Long categoryId, Model model,
+      Pageable pageable) {
     Page<Item> items = adminService.getAllByCategory(categoryId, pageable);
     List<Manufacturer> manufacturers = adminService.getAllManufacturers();
     List<Supplier> suppliers = adminService.getAllSuppliers();
