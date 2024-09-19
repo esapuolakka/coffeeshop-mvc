@@ -1,3 +1,6 @@
+--Test data
+
+
 INSERT INTO osasto (id, nimi, osastoid) VALUES (1, 'kahvilaitteet', 0);
 INSERT INTO osasto (id, nimi, osastoid) VALUES (2, 'kulutustuotteet', 0);
 INSERT INTO osasto (id, nimi, osastoid) VALUES (3, 'espressolaitteet', 1);
